@@ -12,9 +12,7 @@ import uo.ri.util.jdbc.Jdbc;
 import uo.ri.util.menu.Action;
 
 public class UpdateMechanicAction implements Action {
-
-    private static final String TMECHANICS_FINDBYID = 
-            "select * from TMechanics where id = ?";
+	
     private static final String TMECHANICS_UPDATE = 
             "update TMechanics set name = ?, surname = ?, "
     		+ "version = version + 1, updatedat = ?"
@@ -60,18 +58,6 @@ public class UpdateMechanicAction implements Action {
     }
 
     private void checkMechanicExists(String id) throws BusinessException {
-        try (Connection c = Jdbc.createThreadConnection()) {
-            try (PreparedStatement pst = c
-                    .prepareStatement(TMECHANICS_FINDBYID)) {
-                pst.setString(1, id);
-                try (ResultSet rs = pst.executeQuery()) {
-                    if (!rs.next()) {
-                        throw new BusinessException("Mechanic does not exist");
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        
     }
 }

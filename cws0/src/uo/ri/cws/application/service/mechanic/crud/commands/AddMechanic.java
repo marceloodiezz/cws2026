@@ -7,7 +7,6 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 import uo.ri.cws.application.service.mechanic.MechanicCrudService.MechanicDto;
-import uo.ri.util.console.Console;
 import uo.ri.util.jdbc.Jdbc;
 
 public class AddMechanic {

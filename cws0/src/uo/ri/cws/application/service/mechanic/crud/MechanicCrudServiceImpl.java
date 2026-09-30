@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import uo.ri.cws.application.service.mechanic.MechanicCrudService;
 import uo.ri.cws.application.service.mechanic.crud.commands.AddMechanic;
+import uo.ri.cws.application.service.mechanic.crud.commands.FindById;
 import uo.ri.util.exception.BusinessException;
 
 public class MechanicCrudServiceImpl implements MechanicCrudService {
@@ -28,8 +29,7 @@ public class MechanicCrudServiceImpl implements MechanicCrudService {
 
 	@Override
 	public Optional<MechanicDto> findById(String id) throws BusinessException {
-		// TODO Auto-generated method stub
-		return null;
+		return new FindById(id).execute();
 	}
 
 	@Override
