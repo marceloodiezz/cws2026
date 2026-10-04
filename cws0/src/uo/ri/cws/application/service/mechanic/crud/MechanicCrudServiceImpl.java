@@ -5,7 +5,11 @@ import java.util.Optional;
 
 import uo.ri.cws.application.service.mechanic.MechanicCrudService;
 import uo.ri.cws.application.service.mechanic.crud.commands.AddMechanic;
+import uo.ri.cws.application.service.mechanic.crud.commands.DeleteMechanic;
 import uo.ri.cws.application.service.mechanic.crud.commands.FindById;
+import uo.ri.cws.application.service.mechanic.crud.commands.ListAllMechanics;
+import uo.ri.cws.application.service.mechanic.crud.commands.ListMechanic;
+import uo.ri.cws.application.service.mechanic.crud.commands.UpdateMechanic;
 import uo.ri.util.exception.BusinessException;
 
 public class MechanicCrudServiceImpl implements MechanicCrudService {
@@ -17,14 +21,12 @@ public class MechanicCrudServiceImpl implements MechanicCrudService {
 
 	@Override
 	public void delete(String mechanicId) throws BusinessException {
-		// TODO Auto-generated method stub
-		
+	    new DeleteMechanic(mechanicId).execute();
 	}
 
 	@Override
 	public void update(MechanicDto dto) throws BusinessException {
-		// TODO Auto-generated method stub
-		
+	    new UpdateMechanic(dto).execute();
 	}
 
 	@Override
@@ -34,14 +36,12 @@ public class MechanicCrudServiceImpl implements MechanicCrudService {
 
 	@Override
 	public Optional<MechanicDto> findByNif(String nif) throws BusinessException {
-		// TODO Auto-generated method stub
-		return null;
+		return new ListMechanic(nif).execute();
 	}
 
 	@Override
 	public List<MechanicDto> findAll() throws BusinessException {
-		// TODO Auto-generated method stub
-		return null;
+		return new ListAllMechanics().execute();
 	}
 
 }

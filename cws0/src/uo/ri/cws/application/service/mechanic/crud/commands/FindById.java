@@ -26,6 +26,7 @@ public class FindById {
 		try (Connection c = Jdbc.createThreadConnection()) {
             try (PreparedStatement pst = c
                     .prepareStatement(TMECHANICS_FINDBYID)) {
+                
                 pst.setString(1, id);
                 try (ResultSet rs = pst.executeQuery()) {
                     if (rs.next()) {

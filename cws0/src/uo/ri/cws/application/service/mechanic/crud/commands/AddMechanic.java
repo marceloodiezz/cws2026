@@ -7,6 +7,9 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 import uo.ri.cws.application.service.mechanic.MechanicCrudService.MechanicDto;
+import uo.ri.util.assertion.ArgumentChecks;
+import uo.ri.util.assertion.BusinessChecks;
+import uo.ri.util.exception.BusinessException;
 import uo.ri.util.jdbc.Jdbc;
 
 public class AddMechanic {
@@ -19,14 +22,24 @@ public class AddMechanic {
 	private MechanicDto dto;
 	
 	public AddMechanic(MechanicDto dto) {
+	    ArgumentChecks.isNotNull(dto);
+	    ArgumentChecks.isNotBlank(dto.nif);
+	    ArgumentChecks.isNotBlank(dto.name);
+	    ArgumentChecks.isNotBlank(dto.surname);
+	    
 		this.dto = dto;
 	}
 
-	public MechanicDto execute() {
+	public MechanicDto execute() throws BusinessException {
 		
 		String nif = dto.nif;
         String name = dto.name;
         String surname = dto.surname;
+        
+        BusinessChecks.doesNotExist(
+            new ListMechanic(nif).execute(),
+            "Mechanic already exists"
+        );
         
         // El cliente no debería conocerlo
         String id = dto.id = UUID.randomUUID().toString();
