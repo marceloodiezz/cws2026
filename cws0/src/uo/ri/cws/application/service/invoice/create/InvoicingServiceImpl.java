@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import uo.ri.cws.application.service.invoice.InvoicingService;
+import uo.ri.cws.application.service.invoice.create.commands.FindNotInvoicedWorkOrdersByClient;
 import uo.ri.cws.application.service.invoice.create.commands.InvoiceWorkorder;
 import uo.ri.util.exception.BusinessException;
 
@@ -24,8 +25,7 @@ public class InvoicingServiceImpl implements InvoicingService {
 
     @Override
     public List<InvoicingWorkOrderDto> findNotInvoicedWorkOrdersByClientNif(String nif) throws BusinessException {
-        // TODO Auto-generated method stub
-        return null;
+        return new FindNotInvoicedWorkOrdersByClient(nif).execute();
     }
 
     @Override
