@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import uo.ri.cws.application.persistence.util.jdbc.Jdbc;
 import uo.ri.cws.application.service.invoice.InvoicingService.InvoicingWorkOrderDto;
 import uo.ri.util.assertion.ArgumentChecks;
-import uo.ri.util.jdbc.Jdbc;
 
 public class FindNotInvoicedWorkOrdersByClient {
     

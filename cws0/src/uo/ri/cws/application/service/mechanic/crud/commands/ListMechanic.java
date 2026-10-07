@@ -6,9 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+import uo.ri.cws.application.persistence.util.jdbc.Jdbc;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService.MechanicDto;
 import uo.ri.util.assertion.ArgumentChecks;
-import uo.ri.util.jdbc.Jdbc;
 
 public class ListMechanic {
     

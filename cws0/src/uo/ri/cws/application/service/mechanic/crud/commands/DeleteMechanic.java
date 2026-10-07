@@ -5,10 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import uo.ri.cws.application.persistence.util.jdbc.Jdbc;
 import uo.ri.util.assertion.ArgumentChecks;
 import uo.ri.util.assertion.BusinessChecks;
 import uo.ri.util.exception.BusinessException;
-import uo.ri.util.jdbc.Jdbc;
 
 public class DeleteMechanic {
     

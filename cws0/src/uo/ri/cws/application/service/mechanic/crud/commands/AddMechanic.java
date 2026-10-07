@@ -1,69 +1,39 @@
 package uo.ri.cws.application.service.mechanic.crud.commands;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.UUID;
-
+import uo.ri.conf.Factories;
+import uo.ri.cws.application.persistence.mechanic.MechanicGateway;
+import uo.ri.cws.application.persistence.mechanic.MechanicGateway.MechanicRecord;
+import uo.ri.cws.application.persistence.util.command.Command;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService.MechanicDto;
+import uo.ri.cws.application.service.mechanic.crud.MechanicDtoAssembler;
 import uo.ri.util.assertion.ArgumentChecks;
-import uo.ri.util.assertion.BusinessChecks;
 import uo.ri.util.exception.BusinessException;
-import uo.ri.util.jdbc.Jdbc;
 
-public class AddMechanic {
-	
-	private static final String TMECHANICS_ADD = "insert into TMechanics"
-            + "(id, nif, name, surname, version, "
-            + "createdAt, updatedAt, entityState) "
-            + "values (?, ?, ?, ?, ?, ?, ?, ?)";
+public class AddMechanic implements Command<MechanicDto> {
+    
+    private MechanicGateway mg = Factories.persistence.forMechanic();
 	
 	private MechanicDto dto;
 	
 	public AddMechanic(MechanicDto dto) {
-	    ArgumentChecks.isNotNull(dto);
-	    ArgumentChecks.isNotBlank(dto.nif);
-	    ArgumentChecks.isNotBlank(dto.name);
-	    ArgumentChecks.isNotBlank(dto.surname);
+	    ArgumentChecks.isNotNull(dto, "The mechanic cannot be null");
+	    ArgumentChecks.isNotBlank(dto.nif, "The nif cannot be null or blank");
+	    ArgumentChecks.isNotBlank(dto.name, "The name cannot be null or blank");
+	    ArgumentChecks.isNotBlank(dto.surname, "The surname cannot be null or blank");
 	    
 		this.dto = dto;
 	}
 
+	@Override
 	public MechanicDto execute() throws BusinessException {
-		
-		String nif = dto.nif;
-        String name = dto.name;
-        String surname = dto.surname;
-        
-        BusinessChecks.doesNotExist(
-            new ListMechanic(nif).execute(),
-            "Mechanic already exists"
-        );
-        
-        // El cliente no debería conocerlo
-        String id = dto.id = UUID.randomUUID().toString();
-        long version = dto.version = 1;
-        
-		// Process
-        try (Connection c = Jdbc.createThreadConnection();) {
-            try (PreparedStatement pst = c.prepareStatement(TMECHANICS_ADD)) {
-                pst.setString(1, id);
-                pst.setString(2, nif);
-                pst.setString(3, name);
-                pst.setString(4, surname);
-                pst.setLong(5, version);
-                pst.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
-                pst.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
-                pst.setString(8, "ENABLED");               
-
-                pst.executeUpdate();
-
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        
+	    
+	    MechanicRecord record = MechanicDtoAssembler.toRecord(dto);
+	    
+	    mg.add(record);
+	    
+	    dto.id = record.id;
+	    dto.version = record.version;
+	    
         return dto;
 	}
 
