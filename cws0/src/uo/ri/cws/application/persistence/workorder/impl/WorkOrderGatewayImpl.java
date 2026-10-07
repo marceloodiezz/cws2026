@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import uo.ri.cws.application.persistence.util.jdbc.Jdbc;
 import uo.ri.cws.application.persistence.util.jdbc.Queries;
@@ -134,6 +135,24 @@ public class WorkOrderGatewayImpl implements WorkOrderGateway {
             pst.setString(2, workOrderId);
 
             pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    
+    // Para FindNotInvoicedWorkOrdersByClient ------
+    
+    @Override
+    public List<InvoicingWorkOrderRecord> findNotInvoicedByClientNif(String nif) throws PersistenceException {
+        Connection c = Jdbc.getCurrentConnection();
+
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TWORKORDERS_FIND_NOT_INVOICED"))) {
+            pst.setString(1, nif);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                return new InvoicingWorkOrderRecordAssembler().toRecordList(rs);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

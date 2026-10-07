@@ -2,6 +2,7 @@ package uo.ri.cws.application.persistence.workorder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import uo.ri.util.exception.PersistenceException;
 
@@ -27,5 +28,20 @@ public interface WorkOrderGateway {
     void incrementVersion(String workOrderId) throws PersistenceException;
     
     void updateTimestamp(String workOrderId, LocalDateTime timestamp) throws PersistenceException;
+    
+    
+    // Para FindNotInvoicedWorkOrdersByClient ------
+    
+    List<InvoicingWorkOrderRecord> findNotInvoicedByClientNif(String nif) throws PersistenceException;
+    
+    public class InvoicingWorkOrderRecord {
+
+        public String id;
+        public String description;
+        public LocalDateTime date;
+        public String state;
+        public BigDecimal amount;
+        
+    }
 
 }
