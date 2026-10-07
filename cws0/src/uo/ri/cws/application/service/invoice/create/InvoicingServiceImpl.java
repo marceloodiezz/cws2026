@@ -5,16 +5,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import uo.ri.cws.application.persistence.util.command.CommandExecutor;
 import uo.ri.cws.application.service.invoice.InvoicingService;
 import uo.ri.cws.application.service.invoice.create.commands.FindNotInvoicedWorkOrdersByClient;
 import uo.ri.cws.application.service.invoice.create.commands.InvoiceWorkorder;
 import uo.ri.util.exception.BusinessException;
 
 public class InvoicingServiceImpl implements InvoicingService {
+    
+    private CommandExecutor executor = new CommandExecutor();
 
     @Override
     public InvoiceDto create(List<String> workOrderIds) throws BusinessException {
-        return new InvoiceWorkorder(workOrderIds).execute();
+        return executor.execute(new InvoiceWorkorder(workOrderIds));
     }
 
     @Override

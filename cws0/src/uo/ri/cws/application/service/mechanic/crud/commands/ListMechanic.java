@@ -1,57 +1,37 @@
 package uo.ri.cws.application.service.mechanic.crud.commands;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Optional;
 
-import uo.ri.cws.application.persistence.util.jdbc.Jdbc;
+import uo.ri.conf.Factories;
+import uo.ri.cws.application.persistence.mechanic.MechanicGateway;
+import uo.ri.cws.application.persistence.mechanic.MechanicGateway.MechanicRecord;
+import uo.ri.cws.application.persistence.util.command.Command;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService.MechanicDto;
+import uo.ri.cws.application.service.mechanic.crud.MechanicDtoAssembler;
 import uo.ri.util.assertion.ArgumentChecks;
 
-public class ListMechanic {
+public class ListMechanic implements Command<Optional<MechanicDto>> {
     
-    private static final String TMECHANICS_FINDBYNIF = 
-        "SELECT ID, NAME, SURNAME, nif, VERSION FROM TMECHANICS "
-                + "WHERE NIF = ?";
+    private MechanicGateway mg = Factories.persistence.forMechanic();
     
     private String nif;
 
     public ListMechanic(String nif) {
-        ArgumentChecks.isNotNull(nif);
+        ArgumentChecks.isNotNull(nif, "The nif cannot be null");
         this.nif = nif;
     }
     
+    @Override
     public Optional<MechanicDto> execute() {
-        try (Connection c = Jdbc.createThreadConnection()) {
-            try (PreparedStatement pst = c
-                    .prepareStatement(TMECHANICS_FINDBYNIF)) {
-                pst.setString(1, nif);
-                try (ResultSet rs = pst.executeQuery()) {
-                    if (rs.next()) {
-                        return Optional.of(toDto(rs));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
         
-        return Optional.empty();
-    }
-    
-    private MechanicDto toDto(ResultSet rs) throws SQLException {
-
-        MechanicDto dto = new MechanicDto();
-
-        dto.id = rs.getString("id");
-        dto.nif = rs.getString("nif");
-        dto.name = rs.getString("name");
-        dto.surname = rs.getString("surname");
-        dto.version = rs.getLong("version");
-
-        return dto;
+        Optional<MechanicRecord> record = mg.findByNif(nif);
+        
+        if (record.isEmpty())
+            return Optional.empty();
+        
+        MechanicDto dto = MechanicDtoAssembler.toDto(record.get());
+        
+        return Optional.of(dto);
     }
 
 }

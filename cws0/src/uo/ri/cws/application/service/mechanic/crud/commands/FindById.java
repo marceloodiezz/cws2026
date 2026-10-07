@@ -1,57 +1,37 @@
 package uo.ri.cws.application.service.mechanic.crud.commands;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Optional;
 
-import uo.ri.cws.application.persistence.util.jdbc.Jdbc;
+import uo.ri.conf.Factories;
+import uo.ri.cws.application.persistence.mechanic.MechanicGateway;
+import uo.ri.cws.application.persistence.mechanic.MechanicGateway.MechanicRecord;
+import uo.ri.cws.application.persistence.util.command.Command;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService.MechanicDto;
+import uo.ri.cws.application.service.mechanic.crud.MechanicDtoAssembler;
 import uo.ri.util.assertion.ArgumentChecks;
 
-public class FindById {
-	
-	private static final String TMECHANICS_FINDBYID = 
-            "select * from TMechanics where id = ?";
+public class FindById implements Command<Optional<MechanicDto>> {
+    
+    private MechanicGateway mg = Factories.persistence.forMechanic();
 	
 	private String id;
 	
 	public FindById(String id) {
-		ArgumentChecks.isNotNull(id);
+		ArgumentChecks.isNotNull(id, "The id cannot be null");
 		this.id = id;
 	}
 	
-	public Optional<MechanicDto> execute() {
-		try (Connection c = Jdbc.createThreadConnection()) {
-            try (PreparedStatement pst = c
-                    .prepareStatement(TMECHANICS_FINDBYID)) {
-                
-                pst.setString(1, id);
-                try (ResultSet rs = pst.executeQuery()) {
-                    if (rs.next()) {
-                        return Optional.of(toDto(rs));
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-		
-		return Optional.empty();
+	@Override
+    public Optional<MechanicDto> execute() {
+	    
+	    Optional<MechanicRecord> record = mg.findById(id);
+    
+        if (record.isEmpty())
+            return Optional.empty();
+        
+        MechanicDto dto = MechanicDtoAssembler.toDto(record.get());
+    
+        return Optional.of(dto);
 	}
-	
-	private MechanicDto toDto(ResultSet rs) throws SQLException {
-
-        MechanicDto dto = new MechanicDto();
-
-        dto.id = rs.getString("id");
-        dto.nif = rs.getString("nif");
-        dto.name = rs.getString("name");
-        dto.surname = rs.getString("surname");
-        dto.version = rs.getLong("version");
-
-        return dto;
-    }
 
 }

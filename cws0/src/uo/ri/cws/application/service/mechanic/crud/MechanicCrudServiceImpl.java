@@ -24,27 +24,27 @@ public class MechanicCrudServiceImpl implements MechanicCrudService {
 
 	@Override
 	public void delete(String mechanicId) throws BusinessException {
-	    new DeleteMechanic(mechanicId).execute();
+	    executor.execute(new DeleteMechanic(mechanicId));
 	}
 
 	@Override
 	public void update(MechanicDto dto) throws BusinessException {
-	    new UpdateMechanic(dto).execute();
+	    executor.execute(new UpdateMechanic(dto));
 	}
 
 	@Override
 	public Optional<MechanicDto> findById(String id) throws BusinessException {
-		return new FindById(id).execute();
+		return executor.execute(new FindById(id));
 	}
 
 	@Override
 	public Optional<MechanicDto> findByNif(String nif) throws BusinessException {
-		return new ListMechanic(nif).execute();
+		return executor.execute(new ListMechanic(nif));
 	}
 
 	@Override
 	public List<MechanicDto> findAll() throws BusinessException {
-		return new ListAllMechanics().execute();
+		return executor.execute(new ListAllMechanics());
 	}
 
 }

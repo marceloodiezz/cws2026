@@ -7,6 +7,7 @@ import uo.ri.cws.application.persistence.util.command.Command;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService.MechanicDto;
 import uo.ri.cws.application.service.mechanic.crud.MechanicDtoAssembler;
 import uo.ri.util.assertion.ArgumentChecks;
+import uo.ri.util.assertion.BusinessChecks;
 import uo.ri.util.exception.BusinessException;
 
 public class AddMechanic implements Command<MechanicDto> {
@@ -26,6 +27,11 @@ public class AddMechanic implements Command<MechanicDto> {
 
 	@Override
 	public MechanicDto execute() throws BusinessException {
+	    
+	    BusinessChecks.doesNotExist(
+	        mg.findByNif(dto.nif),
+	        "Mechanic already exists"
+        );
 	    
 	    MechanicRecord record = MechanicDtoAssembler.toRecord(dto);
 	    
