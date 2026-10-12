@@ -11,8 +11,8 @@
 	<modules>
 		<module>cws_util</module>
 		<module>cws_service_interfaces</module>
-		<module>cws0</module>
-		<!--module>cws_services_jdbc</module-->
+		<!--module>cws0</module-->
+		<module>cws_services_jdbc</module>
 		<module>cws_service_tests</module>
 		<module>cws_client_manager</module>
 		<module>cws_client_cashier</module>
