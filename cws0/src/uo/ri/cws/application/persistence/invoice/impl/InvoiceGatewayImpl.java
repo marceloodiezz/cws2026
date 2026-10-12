@@ -12,6 +12,7 @@ import java.util.Optional;
 import uo.ri.cws.application.persistence.invoice.InvoiceGateway;
 import uo.ri.cws.application.persistence.util.jdbc.Jdbc;
 import uo.ri.cws.application.persistence.util.jdbc.Queries;
+import uo.ri.util.exception.NotYetImplementedException;
 import uo.ri.util.exception.PersistenceException;
 
 public class InvoiceGatewayImpl implements InvoiceGateway {
@@ -30,7 +31,7 @@ public class InvoiceGatewayImpl implements InvoiceGateway {
             return 1L;
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new PersistenceException(e);
         }
     }
     
@@ -55,28 +56,28 @@ public class InvoiceGatewayImpl implements InvoiceGateway {
 
             pst.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new PersistenceException(e);
         }
     }
 
     @Override
     public void remove(String id) throws PersistenceException {
-        throw new UnsupportedOperationException();
+        throw new NotYetImplementedException();
     }
 
     @Override
     public void update(InvoiceRecord t) throws PersistenceException {
-        throw new UnsupportedOperationException();
+        throw new NotYetImplementedException();
     }
 
     @Override
     public Optional<InvoiceRecord> findById(String id) throws PersistenceException {
-        throw new UnsupportedOperationException();
+        throw new NotYetImplementedException();
     }
 
     @Override
     public List<InvoiceRecord> findAll() throws PersistenceException {
-        throw new UnsupportedOperationException();
+        throw new NotYetImplementedException();
     }
 
 }

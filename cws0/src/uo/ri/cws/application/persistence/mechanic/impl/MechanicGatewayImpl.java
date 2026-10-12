@@ -27,11 +27,11 @@ public class MechanicGatewayImpl implements MechanicGateway {
             pst.setLong(5, t.version);
             pst.setTimestamp(6, Timestamp.valueOf(t.createdAt));
             pst.setTimestamp(7, Timestamp.valueOf(t.updatedAt));
-            pst.setString(8, "ENABLED");    
+            pst.setString(8, t.entityState);    
             
             pst.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new PersistenceException(e);
         }
     }
 
@@ -44,7 +44,7 @@ public class MechanicGatewayImpl implements MechanicGateway {
             pst.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new PersistenceException(e);
         }
     }
 
@@ -61,7 +61,7 @@ public class MechanicGatewayImpl implements MechanicGateway {
             
             pst.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new PersistenceException(e);
         }
     }
 
@@ -82,7 +82,7 @@ public class MechanicGatewayImpl implements MechanicGateway {
 
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new PersistenceException(e);
         }
     }
 
@@ -95,7 +95,7 @@ public class MechanicGatewayImpl implements MechanicGateway {
                 return new MechanicRecordAssembler().toRecordList(rs);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new PersistenceException(e);
         }
     }
 
@@ -116,7 +116,7 @@ public class MechanicGatewayImpl implements MechanicGateway {
 
             return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new PersistenceException(e);
         }
     }
 

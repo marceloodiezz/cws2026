@@ -4,13 +4,16 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import uo.ri.conf.Factories;
 import uo.ri.cws.application.persistence.invoice.InvoiceGateway;
 import uo.ri.cws.application.persistence.invoice.InvoiceGateway.InvoiceRecord;
 import uo.ri.cws.application.persistence.util.command.Command;
 import uo.ri.cws.application.persistence.workorder.WorkOrderGateway;
+import uo.ri.cws.application.persistence.workorder.WorkOrderGateway.WorkOrderRecord;
 import uo.ri.cws.application.service.invoice.InvoicingService.InvoiceDto;
 import uo.ri.util.assertion.ArgumentChecks;
 import uo.ri.util.assertion.BusinessChecks;
@@ -35,33 +38,30 @@ public class InvoiceWorkorder implements Command<InvoiceDto> {
 
     @Override
     public InvoiceDto execute() throws BusinessException {
+        
+        List<WorkOrderRecord> workOrders = findWorkOrders(workOrderIds);
 
         BusinessChecks.isTrue(
-            checkWorkOrdersExist(workOrderIds),
-            "some workorder does not exist"
-        );
-
-        BusinessChecks.isTrue(
-            checkWorkOrdersApproved(workOrderIds),
+            checkWorkOrdersApproved(workOrders),
             "some workorder is not approved yet"
         );
 
         long numberInvoice = ig.getNextInvoiceNumber();
 
         LocalDate dateInvoice = LocalDate.now();
-
-        BigDecimal subtotal = calculateTotalInvoice(workOrderIds);
-
+        
+        BigDecimal subtotal = calculateTotalInvoice(workOrders);
+        
         double vatRate = vatPercentage(dateInvoice);
 
         BigDecimal vat = BigDecimal.valueOf(vatRate);
 
         BigDecimal vatAmount = subtotal.multiply(vat)
-                        .divide(
-                            BigDecimal.valueOf(100),
-                            2,
-                            RoundingMode.HALF_EVEN
-                        );
+                    .divide(
+                        BigDecimal.valueOf(100),
+                        2,
+                        RoundingMode.HALF_EVEN
+                    );
 
         BigDecimal total = subtotal.add(vatAmount);
 
@@ -77,12 +77,7 @@ public class InvoiceWorkorder implements Command<InvoiceDto> {
 
         ig.add(invoice);
 
-        linkWorkordersToInvoice(invoice.id, workOrderIds);
-
-        markWorkOrdersAsInvoiced(workOrderIds);
-
-        updateVersion(workOrderIds);
-        updateTimestamp(workOrderIds);
+        invoiceWorkOrders(workOrders, invoice.id);
 
         InvoiceDto dto = new InvoiceDto();
 
@@ -99,76 +94,51 @@ public class InvoiceWorkorder implements Command<InvoiceDto> {
         return dto;
     }
     
-    private void updateTimestamp(List<String> ids) {
-        for (String id : ids)
-            wg.updateTimestamp(id, LocalDateTime.now());
-    }
-    
-    private void updateVersion(List<String> ids) {
-        for (String id : ids)
-            wg.incrementVersion(id);
-    }
-    
-    /*
-     * checks whether every work order exist
-     */
-    private boolean checkWorkOrdersExist(List<String> workOrderIds) {
-        for (String id : workOrderIds)
-            if (!wg.exists(id))
-                return false;
-    
-        return true;
-    }
-    
-    /*
-     * checks whether every work order id is APPROVED
-     */
-    private boolean checkWorkOrdersApproved(List<String> workOrderIds) {
-        for (String id : workOrderIds) {
-            String state = wg.findState(id);
-    
-            if (!"APPROVED".equalsIgnoreCase(state))
-                return false;
+    private List<WorkOrderRecord> findWorkOrders(List<String> ids) throws BusinessException {
+        List<WorkOrderRecord> result = new ArrayList<>();
+        
+        for (String id : ids) {
+            Optional<WorkOrderRecord> workOrder = wg.findById(id);
+            
+            BusinessChecks.exists(workOrder, "some workorder does not exist");
+            
+            result.add(workOrder.get());
         }
+        
+        return result;
+    }
     
+    private boolean checkWorkOrdersApproved(List<WorkOrderRecord> workOrders) {
+        for (WorkOrderRecord workOrder : workOrders)
+            if (!"APPROVED".equalsIgnoreCase(workOrder.state))
+                return false;
+        
         return true;
     }
     
-    /*
-     * Compute total amount of the invoice (as the total of individual work
-     * orders' amount
-     */
-    private BigDecimal calculateTotalInvoice(List<String> ids) {
+    private BigDecimal calculateTotalInvoice(List<WorkOrderRecord> workOrders) {
         BigDecimal total = BigDecimal.ZERO;
-
-        for (String id : ids)
-            total = total.add(wg.findAmount(id));
-    
+        
+        for (WorkOrderRecord workOrder : workOrders)
+            total = total.add(workOrder.total_amount);
+        
         return total;
     }
     
-    /*
-     * returns vat percentage
-     */
     private double vatPercentage(LocalDate date) {
         return LocalDate.parse("2012-07-01").isBefore(date) ? 21.0 : 18.0;
     }
     
-    /*
-     * Set the invoice number field in work order table to the invoice number
-     * generated
-     */
-    private void linkWorkordersToInvoice(String invoiceId, List<String> ids) {
-        for (String id : ids)
-            wg.linkToInvoice(id, invoiceId);
-    }
+    private void invoiceWorkOrders(List<WorkOrderRecord> workOrders, String invoiceId) {
+        LocalDateTime now = LocalDateTime.now();
     
-    /*
-     * Sets status to INVOICED for every workorder
-     */
-    private void markWorkOrdersAsInvoiced(List<String> ids) {
-        for (String id : ids)
-            wg.markAsInvoiced(id);
+        for (WorkOrderRecord workOrder : workOrders) {
+            workOrder.invoice_id = invoiceId;
+            workOrder.state = "INVOICED";
+            workOrder.updatedAt = now;
+            
+            wg.update(workOrder);
+        }
     }
 
 }
