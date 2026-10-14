@@ -53,6 +53,7 @@ public class InvoiceGatewayImpl implements InvoiceGateway {
             pst.setTimestamp(10, Timestamp.valueOf(invoice.createdAt));
             pst.setTimestamp(11, Timestamp.valueOf(invoice.updatedAt));
             pst.setString(12, invoice.entityState);
+            pst.setBoolean(13, false);
 
             pst.executeUpdate();
         } catch (SQLException e) {
