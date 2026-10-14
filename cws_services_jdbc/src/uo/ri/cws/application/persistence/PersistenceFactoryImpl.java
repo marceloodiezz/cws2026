@@ -1,11 +1,23 @@
 package uo.ri.cws.application.persistence;
 
+import uo.ri.cws.application.persistence.charge.ChargeGateway;
+import uo.ri.cws.application.persistence.charge.impl.ChargeGatewayImpl;
+import uo.ri.cws.application.persistence.client.ClientGateway;
+import uo.ri.cws.application.persistence.client.impl.ClientGatewayImpl;
+import uo.ri.cws.application.persistence.creditcard.CreditCardGateway;
+import uo.ri.cws.application.persistence.creditcard.impl.CreditCardGatewayImpl;
 import uo.ri.cws.application.persistence.intervention.InterventionGateway;
 import uo.ri.cws.application.persistence.intervention.impl.InterventionGatewayImpl;
 import uo.ri.cws.application.persistence.invoice.InvoiceGateway;
 import uo.ri.cws.application.persistence.invoice.impl.InvoiceGatewayImpl;
 import uo.ri.cws.application.persistence.mechanic.MechanicGateway;
 import uo.ri.cws.application.persistence.mechanic.impl.MechanicGatewayImpl;
+import uo.ri.cws.application.persistence.paymentmean.PaymentMeanGateway;
+import uo.ri.cws.application.persistence.paymentmean.impl.PaymentMeanGatewayImpl;
+import uo.ri.cws.application.persistence.recommendation.RecommendationGateway;
+import uo.ri.cws.application.persistence.recommendation.impl.RecommendationGatewayImpl;
+import uo.ri.cws.application.persistence.voucher.VoucherGateway;
+import uo.ri.cws.application.persistence.voucher.impl.VoucherGatewayImpl;
 import uo.ri.cws.application.persistence.workorder.WorkOrderGateway;
 import uo.ri.cws.application.persistence.workorder.impl.WorkOrderGatewayImpl;
 
@@ -29,6 +41,36 @@ public class PersistenceFactoryImpl implements PersistenceFactory{
     @Override
     public InterventionGateway forIntervention() {
         return new InterventionGatewayImpl();
+    }
+    
+    @Override
+    public ClientGateway forClient() {
+        return new ClientGatewayImpl();
+    }
+
+    @Override
+    public PaymentMeanGateway forPaymentMean() {
+        return new PaymentMeanGatewayImpl();
+    }
+
+    @Override
+    public CreditCardGateway forCreditCard() {
+        return new CreditCardGatewayImpl();
+    }
+
+    @Override
+    public VoucherGateway forVoucher() {
+        return new VoucherGatewayImpl();
+    }
+
+    @Override
+    public RecommendationGateway forRecommendation() {
+        return new RecommendationGatewayImpl();
+    }
+
+    @Override
+    public ChargeGateway forCharge() {
+        return new ChargeGatewayImpl();
     }
 
 }

@@ -18,6 +18,12 @@ public interface WorkOrderGateway extends Gateway<WorkOrderGateway.WorkOrderReco
     
     List<InvoicingWorkOrderRecord> findNotInvoicedByClientNif(String nif) throws PersistenceException;
     
+
+    // Para GenerateVouchers --------------------------
+
+    boolean hasPaidWorkOrdersByClientId(String clientId) throws PersistenceException;
+
+
     public class WorkOrderRecord extends Gateway.BaseRecord {
     
         public LocalDateTime date;

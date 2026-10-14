@@ -53,6 +53,27 @@ public class WorkOrderGatewayImpl implements WorkOrderGateway {
     }
     
     
+
+    // Para GenerateVouchers -----------------------
+
+    @Override
+    public boolean hasPaidWorkOrdersByClientId(String clientId) throws PersistenceException {
+        Connection c = Jdbc.getCurrentConnection();
+
+        try (PreparedStatement pst = c.prepareStatement(
+                Queries.getSQLSentence("TWORKORDERS_COUNT_PAID_BY_CLIENT"))) {
+            pst.setString(1, clientId);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                rs.next();
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+    
+    
     // ------------------
     
     @Override

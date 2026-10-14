@@ -1,0 +1,20 @@
+package uo.ri.cws.application.persistence.voucher;
+
+import java.math.BigDecimal;
+import java.util.Optional;
+
+import uo.ri.cws.application.persistence.Gateway;
+
+public interface VoucherGateway extends Gateway<VoucherGateway.VoucherRecord> {
+    
+    Optional<VoucherRecord> findByCode(String code);
+    
+    public class VoucherRecord extends Gateway.BaseRecord {
+        
+        public String code;
+        public String description;
+        public BigDecimal available;
+        
+    }
+
+}
