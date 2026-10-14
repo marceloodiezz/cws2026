@@ -34,14 +34,23 @@ public class UpdateMechanic implements Command<Void> {
         Optional<MechanicRecord> current = mg.findById(dto.id);
         
         BusinessChecks.exists(
-            current,
-            "Mechanic does not exist"
+        		current,
+        		"Mechanic does not exist"
         );
         
         BusinessChecks.hasVersion(
-            dto.version,
-            current.get().version
+        		dto.version,
+        		current.get().version
         );
+        
+        Optional<MechanicRecord> mechanicWithNif = mg.findByNif(dto.nif);
+        
+        if (mechanicWithNif.isPresent()) {
+        	BusinessChecks.isTrue(
+        			mechanicWithNif.get().id.equals(dto.id),
+        			"Another mechanic already has this NIF"
+        	);
+        }
         
         MechanicRecord record = MechanicDtoAssembler.toRecordForUpdate(dto);
     

@@ -18,6 +18,7 @@ public class ListMechanic implements Command<Optional<MechanicDto>> {
 
     public ListMechanic(String nif) {
         ArgumentChecks.isNotNull(nif, "The nif cannot be null");
+        ArgumentChecks.isNotBlank(nif, "The nif cannot or blank");
         this.nif = nif;
     }
     

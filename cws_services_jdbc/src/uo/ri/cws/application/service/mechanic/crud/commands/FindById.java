@@ -18,6 +18,7 @@ public class FindById implements Command<Optional<MechanicDto>> {
 	
 	public FindById(String id) {
 		ArgumentChecks.isNotNull(id, "The id cannot be null");
+		ArgumentChecks.isNotBlank(id, "The id cannot be blank");
 		this.id = id;
 	}
 	

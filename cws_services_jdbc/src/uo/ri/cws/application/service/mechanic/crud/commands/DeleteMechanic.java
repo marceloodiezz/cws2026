@@ -20,7 +20,8 @@ public class DeleteMechanic implements Command<Void> {
     private String mechanicId;
     
     public DeleteMechanic(String mechanicId) {
-        ArgumentChecks.isNotNull(mechanicId);
+        ArgumentChecks.isNotNull(mechanicId, "The mechanic id cannot be null");
+        ArgumentChecks.isNotBlank(mechanicId, "The mechanic id cannot be blank");
         this.mechanicId = mechanicId;
     }
     
