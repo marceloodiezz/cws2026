@@ -6,6 +6,8 @@ import uo.ri.cws.application.service.invoice.InvoicingService;
 import uo.ri.cws.application.service.invoice.create.InvoicingServiceImpl;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService;
 import uo.ri.cws.application.service.mechanic.crud.MechanicCrudServiceImpl;
+import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService;
+import uo.ri.cws.application.service.paymentmean.VoucherGenerationService;
 import uo.ri.cws.application.service.spare.SparePartCrudService;
 import uo.ri.cws.application.service.vehicle.VehicleCrudService;
 import uo.ri.cws.application.service.vehicletype.VehicleTypeCrudService;
@@ -71,6 +73,18 @@ public class ServiceFactoryImpl implements ServiceFactory {
 	@Override
 	public InvoicingService forCreateInvoiceService() {
 	    return new InvoicingServiceImpl();
+	}
+
+	@Override
+	public VoucherGenerationService forVoucherService() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PaymentMeanCrudService forPaymentMeanCrudService() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

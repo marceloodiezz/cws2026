@@ -1,4 +1,4 @@
-package uo.ri.cws.application.service.robustness.invoice;
+package uo.ri.cws.application.service.robustness.invoice.create;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

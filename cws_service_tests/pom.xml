@@ -17,6 +17,7 @@
 			<groupId>uo.ri</groupId>
 <!--			
 			<artifactId>cws_services_jpa</artifactId>
+			<artifactId>cws_services_jdbc</artifactId>
 -->
 			<artifactId>cws_services_jdbc</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
