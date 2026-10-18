@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import uo.ri.cws.application.persistence.util.command.CommandExecutor;
 import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService;
+import uo.ri.cws.application.service.paymentmean.crud.commands.FindByClientNif;
 import uo.ri.cws.application.service.paymentmean.crud.commands.FindById;
 import uo.ri.cws.application.service.paymentmean.crud.commands.FindCreditCardByNumber;
 import uo.ri.cws.application.service.paymentmean.crud.commands.FindVoucherByCode;
@@ -37,7 +38,7 @@ public class PaymentMeanCrudServiceImpl implements PaymentMeanCrudService {
 
     @Override
     public List<PaymentMeanDto> findPaymentMeansByClientNif(String nif) throws BusinessException {
-        throw new NotYetImplementedException();
+        return executor.execute(new FindByClientNif(nif));
     }
 
     @Override
