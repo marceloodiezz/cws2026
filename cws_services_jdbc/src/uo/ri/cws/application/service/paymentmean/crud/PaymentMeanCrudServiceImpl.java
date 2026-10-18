@@ -7,12 +7,12 @@ import uo.ri.cws.application.persistence.util.command.CommandExecutor;
 import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService;
 import uo.ri.cws.application.service.paymentmean.crud.commands.AddCard;
 import uo.ri.cws.application.service.paymentmean.crud.commands.AddVoucher;
+import uo.ri.cws.application.service.paymentmean.crud.commands.DeletePaymentMean;
 import uo.ri.cws.application.service.paymentmean.crud.commands.FindByClientNif;
 import uo.ri.cws.application.service.paymentmean.crud.commands.FindById;
 import uo.ri.cws.application.service.paymentmean.crud.commands.FindCreditCardByNumber;
 import uo.ri.cws.application.service.paymentmean.crud.commands.FindVoucherByCode;
 import uo.ri.util.exception.BusinessException;
-import uo.ri.util.exception.NotYetImplementedException;
 
 public class PaymentMeanCrudServiceImpl implements PaymentMeanCrudService {
 
@@ -30,7 +30,7 @@ public class PaymentMeanCrudServiceImpl implements PaymentMeanCrudService {
 
     @Override
     public void deletePaymentMean(String id) throws BusinessException {
-        throw new NotYetImplementedException();
+        executor.execute(new DeletePaymentMean(id));
     }
 
     @Override
