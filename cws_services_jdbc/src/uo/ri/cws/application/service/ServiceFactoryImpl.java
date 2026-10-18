@@ -12,6 +12,7 @@ import uo.ri.cws.application.service.paymentmean.crud.PaymentMeanCrudServiceImpl
 import uo.ri.cws.application.service.spare.SparePartCrudService;
 import uo.ri.cws.application.service.vehicle.VehicleCrudService;
 import uo.ri.cws.application.service.vehicletype.VehicleTypeCrudService;
+import uo.ri.cws.application.service.voucher.VoucherGenerationServiceImpl;
 import uo.ri.cws.application.service.workorder.CloseWorkOrderService;
 import uo.ri.cws.application.service.workorder.ViewAssignedWorkOrdersService;
 import uo.ri.cws.application.service.workorder.WorkOrderCrudService;
@@ -78,8 +79,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
 
 	@Override
 	public VoucherGenerationService forVoucherService() {
-		// TODO Auto-generated method stub
-		return null;
+	    return new VoucherGenerationServiceImpl();
 	}
 
 	@Override
