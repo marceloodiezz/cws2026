@@ -128,7 +128,7 @@ public class InvoiceWorkorder implements Command<InvoiceDto> {
     }
     
     private double vatPercentage(LocalDate date) {
-        return LocalDate.parse("2012-07-01").isBefore(date) ? 21.0 : 18.0;
+        return date.isBefore(LocalDate.of(2012, 7, 1)) ? 18.0 : 21.0;
     }
     
     private void invoiceWorkOrders(List<WorkOrderRecord> workOrders, String invoiceId) {
