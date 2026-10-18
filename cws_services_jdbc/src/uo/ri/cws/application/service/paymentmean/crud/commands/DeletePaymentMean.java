@@ -10,6 +10,7 @@ import uo.ri.cws.application.persistence.voucher.VoucherGateway;
 import uo.ri.util.assertion.ArgumentChecks;
 import uo.ri.util.assertion.BusinessChecks;
 import uo.ri.util.exception.BusinessException;
+import uo.ri.util.exception.PersistenceException;
 
 public class DeletePaymentMean implements Command<Void> {
     
@@ -51,7 +52,7 @@ public class DeletePaymentMean implements Command<Void> {
             break;
             
         default:
-            throw new IllegalStateException("Unknown payment mean type: " + pm.dtype);
+            throw new PersistenceException("Unknown payment mean type: " + pm.dtype);
             
         }
         

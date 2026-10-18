@@ -17,6 +17,7 @@ import uo.ri.cws.application.persistence.voucher.VoucherGateway;
 import uo.ri.cws.application.persistence.voucher.VoucherGateway.VoucherRecord;
 import uo.ri.cws.application.service.paymentmean.VoucherGenerationService.VoucherSummaryDto;
 import uo.ri.util.exception.BusinessException;
+import uo.ri.util.exception.PersistenceException;
 
 public class GetVoucherSummary implements Command<List<VoucherSummaryDto>> {
     
@@ -52,7 +53,7 @@ public class GetVoucherSummary implements Command<List<VoucherSummaryDto>> {
         for (String clientId : vouchersByClient.keySet()) {
             
             ClientRecord client = cg.findById(clientId)
-                    .orElseThrow(() -> new IllegalStateException("Client not found: " + clientId));
+                    .orElseThrow(() -> new PersistenceException("Client not found for voucher summary: " + clientId));
             
             List<PaymentMeanRecord> clientVouchers = vouchersByClient.get(clientId);
             
@@ -64,9 +65,9 @@ public class GetVoucherSummary implements Command<List<VoucherSummaryDto>> {
             for (PaymentMeanRecord pm : clientVouchers) {
                 
                 VoucherRecord voucher = vg.findById(pm.id)
-                        .orElseThrow(() -> new IllegalStateException("Voucher not found: " + pm.id));
+                        .orElseThrow(() -> new PersistenceException("Voucher not found for payment mean: " + pm.id));
                 
-                availableAmount =availableAmount.add(voucher.available);
+                availableAmount = availableAmount.add(voucher.available);
                 consumedAmount = consumedAmount.add(pm.accumulated);
             }
             

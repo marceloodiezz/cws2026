@@ -14,49 +14,57 @@ import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService.PaymentM
 import uo.ri.cws.application.service.paymentmean.crud.PaymentMeanDtoAssembler;
 import uo.ri.util.assertion.ArgumentChecks;
 import uo.ri.util.exception.BusinessException;
+import uo.ri.util.exception.PersistenceException;
 
 public class FindById implements Command<Optional<PaymentMeanDto>> {
-
+    
     private PaymentMeanGateway pmg = Factories.persistence.forPaymentMean();
-
+    
     private CreditCardGateway ccg = Factories.persistence.forCreditCard();
-
+    
     private VoucherGateway vg = Factories.persistence.forVoucher();
-
+    
     private String id;
-
+    
     public FindById(String id) {
         ArgumentChecks.isNotNull(id, "The id cannot be null");
         ArgumentChecks.isNotBlank(id, "The id cannot be blank");
-
+        
         this.id = id;
     }
-
+    
     @Override
     public Optional<PaymentMeanDto> execute() throws BusinessException {
-
+        
         Optional<PaymentMeanRecord> record = pmg.findById(id);
-
-        if (record.isEmpty())
+        
+        if (record.isEmpty()) {
             return Optional.empty();
-
+        }
+        
         PaymentMeanRecord pm = record.get();
-
+        
         switch (pm.dtype) {
-            case "Cash":
-                return Optional.of(PaymentMeanDtoAssembler.toCashDto(pm));
-
-            case "CreditCard":
-                Optional<CreditCardRecord> card = ccg.findById(pm.id);
-                return Optional.of(PaymentMeanDtoAssembler.toCardDto(pm, card.orElseThrow()));
-
-            case "Voucher":
-                Optional<VoucherRecord> voucher = vg.findById(pm.id);
-                return Optional.of(PaymentMeanDtoAssembler.toVoucherDto(pm, voucher.orElseThrow()));
-
-            default:
-                throw new IllegalStateException("Unknown payment mean type: " + pm.dtype);
+        
+        case "Cash":
+            return Optional.of(PaymentMeanDtoAssembler.toCashDto(pm));
+            
+        case "CreditCard":
+            CreditCardRecord card = ccg.findById(pm.id)
+                        .orElseThrow(() -> new PersistenceException(
+                            "Credit card not found for payment mean: " + pm.id));
+            return Optional.of(PaymentMeanDtoAssembler.toCardDto(pm, card));
+            
+        case "Voucher":
+            VoucherRecord voucher = vg.findById(pm.id)
+                        .orElseThrow(() -> new PersistenceException(
+                                "Voucher not found for payment mean: " + pm.id));
+            return Optional.of(PaymentMeanDtoAssembler.toVoucherDto(pm, voucher));
+            
+        default:
+            throw new PersistenceException("Unknown payment mean type: " + pm.dtype);
+            
         }
     }
-
+    
 }

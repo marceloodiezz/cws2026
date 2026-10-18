@@ -16,6 +16,7 @@ import uo.ri.cws.application.service.paymentmean.VoucherGenerationService.Vouche
 import uo.ri.cws.application.service.voucher.VoucherDtoAssembler;
 import uo.ri.util.assertion.ArgumentChecks;
 import uo.ri.util.exception.BusinessException;
+import uo.ri.util.exception.PersistenceException;
 
 public class FindVouchersByClientNif implements Command<List<VoucherDto>> {
     
@@ -52,7 +53,7 @@ public class FindVouchersByClientNif implements Command<List<VoucherDto>> {
             }
             
             VoucherRecord voucher = vg.findById(pm.id)
-                    .orElseThrow(() -> new IllegalStateException("Voucher not found: " + pm.id));
+                    .orElseThrow(() -> new PersistenceException("Voucher not found for payment mean: " + pm.id));
             
             result.add(VoucherDtoAssembler.toDto(pm, voucher));
         }

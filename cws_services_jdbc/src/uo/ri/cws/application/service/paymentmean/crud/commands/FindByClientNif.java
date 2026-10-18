@@ -18,6 +18,7 @@ import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService.PaymentM
 import uo.ri.cws.application.service.paymentmean.crud.PaymentMeanDtoAssembler;
 import uo.ri.util.assertion.ArgumentChecks;
 import uo.ri.util.exception.BusinessException;
+import uo.ri.util.exception.PersistenceException;
 
 public class FindByClientNif implements Command<List<PaymentMeanDto>> {
     
@@ -52,25 +53,26 @@ public class FindByClientNif implements Command<List<PaymentMeanDto>> {
         
         for (PaymentMeanRecord pm : paymentMeans) {
             switch (pm.dtype) {
-            
             case "Cash":
                 result.add(PaymentMeanDtoAssembler.toCashDto(pm));
                 break;
                 
             case "CreditCard":
                 CreditCardRecord card = ccg.findById(pm.id)
-                            .orElseThrow(() -> new IllegalStateException("Credit card not found: " + pm.id));
+                        .orElseThrow(() -> new PersistenceException(
+                                "Credit card not found for payment mean: " + pm.id));
                 result.add(PaymentMeanDtoAssembler.toCardDto(pm, card));
                 break;
                 
             case "Voucher":
                 VoucherRecord voucher = vg.findById(pm.id)
-                            .orElseThrow(() -> new IllegalStateException("Voucher not found: " + pm.id));
+                        .orElseThrow(() -> new PersistenceException(
+                                "Voucher not found for payment mean: " + pm.id));
                 result.add(PaymentMeanDtoAssembler.toVoucherDto(pm, voucher));
                 break;
                 
             default:
-                throw new IllegalStateException("Unknown payment mean type: " + pm.dtype);
+                throw new PersistenceException("Unknown payment mean type: " + pm.dtype);
                 
             }
         }

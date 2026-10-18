@@ -12,6 +12,7 @@ import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService.CardDto;
 import uo.ri.cws.application.service.paymentmean.crud.PaymentMeanDtoAssembler;
 import uo.ri.util.assertion.ArgumentChecks;
 import uo.ri.util.exception.BusinessException;
+import uo.ri.util.exception.PersistenceException;
 
 public class FindCreditCardByNumber implements Command<Optional<CardDto>> {
     
@@ -38,7 +39,7 @@ public class FindCreditCardByNumber implements Command<Optional<CardDto>> {
         
         CreditCardRecord cr = card.get();
         PaymentMeanRecord pm = pmg.findById(cr.id)
-                .orElseThrow(() -> new IllegalStateException("Payment mean not found for card: " + cr.id));
+                .orElseThrow(() -> new PersistenceException("Payment mean not found for card: " + cr.id));
         
         CardDto dto = PaymentMeanDtoAssembler.toCardDto(pm, cr);
         

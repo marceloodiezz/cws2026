@@ -12,6 +12,7 @@ import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService.VoucherD
 import uo.ri.cws.application.service.paymentmean.crud.PaymentMeanDtoAssembler;
 import uo.ri.util.assertion.ArgumentChecks;
 import uo.ri.util.exception.BusinessException;
+import uo.ri.util.exception.PersistenceException;
 
 public class FindVoucherByCode implements Command<Optional<VoucherDto>> {
     
@@ -38,7 +39,7 @@ public class FindVoucherByCode implements Command<Optional<VoucherDto>> {
         
         VoucherRecord vr = voucher.get();
         PaymentMeanRecord pm = pmg.findById(vr.id)
-                .orElseThrow(() -> new IllegalStateException("Payment mean not found for voucher: " + vr.id));
+                .orElseThrow(() -> new PersistenceException("Payment mean not found for voucher: " + vr.id));
         
         VoucherDto dto = PaymentMeanDtoAssembler.toVoucherDto(pm, vr);
         
