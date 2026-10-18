@@ -5,9 +5,9 @@ import java.util.List;
 import uo.ri.cws.application.persistence.util.command.CommandExecutor;
 import uo.ri.cws.application.service.paymentmean.VoucherGenerationService;
 import uo.ri.cws.application.service.voucher.commands.FindVouchersByClientNif;
+import uo.ri.cws.application.service.voucher.commands.GenerateVouchers;
 import uo.ri.cws.application.service.voucher.commands.GetVoucherSummary;
 import uo.ri.util.exception.BusinessException;
-import uo.ri.util.exception.NotYetImplementedException;
 
 public class VoucherGenerationServiceImpl implements VoucherGenerationService {
 
@@ -15,7 +15,7 @@ public class VoucherGenerationServiceImpl implements VoucherGenerationService {
 
     @Override
     public int[] generateVouchers() throws BusinessException {
-        throw new NotYetImplementedException();
+        return executor.execute(new GenerateVouchers());
     }
 
     @Override
