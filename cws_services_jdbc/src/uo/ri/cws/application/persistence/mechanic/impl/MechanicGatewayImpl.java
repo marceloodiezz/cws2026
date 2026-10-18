@@ -39,7 +39,7 @@ public class MechanicGatewayImpl implements MechanicGateway {
     public void remove(String id) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
 
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TMECHANICS_DELETE"))) {
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TMECHANICS_REMOVE"))) {
             pst.setString(1, id);
             pst.executeUpdate();
 

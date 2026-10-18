@@ -21,7 +21,7 @@ public class InvoiceGatewayImpl implements InvoiceGateway {
     public long getNextInvoiceNumber() throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
 
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TINVOICES_FINDNEXTNUMBER"))) {
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TINVOICES_GETNEXTINVOICENUMBER"))) {
 
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next())

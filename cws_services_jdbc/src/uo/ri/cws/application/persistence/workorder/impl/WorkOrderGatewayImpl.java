@@ -22,7 +22,7 @@ public class WorkOrderGatewayImpl implements WorkOrderGateway {
     public boolean hasWorkOrders(String mechanicId) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
 
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TWORKORDERS_COUNT_BY_MECHANIC"))) {
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TWORKORDERS_HASWORKORDERS"))) {
             pst.setString(1, mechanicId);
 
             try (ResultSet rs = pst.executeQuery()) {
@@ -41,7 +41,7 @@ public class WorkOrderGatewayImpl implements WorkOrderGateway {
     public List<InvoicingWorkOrderRecord> findNotInvoicedByClientNif(String nif) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
 
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TWORKORDERS_FIND_NOT_INVOICED"))) {
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TWORKORDERS_FINDNOTINVOICEDBYCLIENTNIF"))) {
             pst.setString(1, nif);
 
             try (ResultSet rs = pst.executeQuery()) {
@@ -61,7 +61,7 @@ public class WorkOrderGatewayImpl implements WorkOrderGateway {
         Connection c = Jdbc.getCurrentConnection();
 
         try (PreparedStatement pst = c.prepareStatement(
-                Queries.getSQLSentence("TWORKORDERS_COUNT_PAID_BY_CLIENT"))) {
+                Queries.getSQLSentence("TWORKORDERS_HASPAIDWORKORDERSBYCLIENTID"))) {
             pst.setString(1, clientId);
 
             try (ResultSet rs = pst.executeQuery()) {

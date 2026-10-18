@@ -39,7 +39,7 @@ public class RecommendationGatewayImpl implements RecommendationGateway {
     public void remove(String id) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
 
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TRECOMMENDATIONS_DELETE"))) {
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TRECOMMENDATIONS_REMOVE"))) {
             pst.setString(1, id);
             
             pst.executeUpdate();
@@ -103,7 +103,7 @@ public class RecommendationGatewayImpl implements RecommendationGateway {
         Connection c = Jdbc.getCurrentConnection();
 
         try (PreparedStatement pst = c.prepareStatement(
-                Queries.getSQLSentence("TRECOMMENDATIONS_FINDAVAILABLE_BY_RECOMMENDER"))) {
+                Queries.getSQLSentence("TRECOMMENDATIONS_FINDAVAILABLEBYRECOMMENDER"))) {
             pst.setString(1, recommenderId);
 
             try (ResultSet rs = pst.executeQuery()) {

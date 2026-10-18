@@ -19,7 +19,7 @@ public class ChargeGatewayImpl implements ChargeGateway {
     public int countByPaymentMeanId(String paymentMeanId) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
 
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TCHARGES_COUNT_BY_PAYMENTMEAN"))) {
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TCHARGES_COUNTBYPAYMENTMEANID"))) {
             pst.setString(1, paymentMeanId);
 
             try (ResultSet rs = pst.executeQuery()) {
@@ -55,7 +55,7 @@ public class ChargeGatewayImpl implements ChargeGateway {
     public void remove(String id) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
 
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TCHARGES_DELETE"))) {
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TCHARGES_REMOVE"))) {
             pst.setString(1, id);
             
             pst.executeUpdate();

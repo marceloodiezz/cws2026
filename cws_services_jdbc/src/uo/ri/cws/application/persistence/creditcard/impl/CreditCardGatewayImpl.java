@@ -35,7 +35,7 @@ public class CreditCardGatewayImpl implements CreditCardGateway {
     public void remove(String id) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
 
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TCREDITCARDS_DELETE"))) {
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TCREDITCARDS_REMOVE"))) {
             pst.setString(1, id);
 
             pst.executeUpdate();

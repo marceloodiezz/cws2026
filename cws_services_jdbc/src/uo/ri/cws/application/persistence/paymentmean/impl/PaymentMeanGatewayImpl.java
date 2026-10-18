@@ -39,7 +39,7 @@ public class PaymentMeanGatewayImpl implements PaymentMeanGateway {
     public void remove(String id) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
 
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TPAYMENTMEANS_DELETE"))) {
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TPAYMENTMEANS_REMOVE"))) {
             pst.setString(1, id);
             pst.executeUpdate();
         } catch (SQLException e) {

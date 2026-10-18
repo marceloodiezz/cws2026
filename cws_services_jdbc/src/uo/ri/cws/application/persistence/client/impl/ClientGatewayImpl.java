@@ -45,7 +45,7 @@ public class ClientGatewayImpl implements ClientGateway {
     public void remove(String id) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
 
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TCLIENTS_DELETE"))) {
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TCLIENTS_REMOVE"))) {
             pst.setString(1, id);
             pst.executeUpdate();
         } catch (SQLException e) {

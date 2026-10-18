@@ -34,7 +34,7 @@ public class VoucherGatewayImpl implements VoucherGateway {
     public void remove(String id) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
 
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TVOUCHERS_DELETE"))) {
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TVOUCHERS_REMOVE"))) {
             pst.setString(1, id);
             
             pst.executeUpdate();

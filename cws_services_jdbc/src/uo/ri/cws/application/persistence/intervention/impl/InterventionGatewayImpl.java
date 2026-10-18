@@ -19,7 +19,7 @@ public class InterventionGatewayImpl implements InterventionGateway {
     public boolean hasInterventions(String mechanicId) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
 
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TINTERVENTIONS_COUNT_BY_MECHANIC"))) {
+        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TINTERVENTIONS_HASINTERVENTIONS"))) {
             pst.setString(1, mechanicId);
             
             try (ResultSet rs = pst.executeQuery()) {
