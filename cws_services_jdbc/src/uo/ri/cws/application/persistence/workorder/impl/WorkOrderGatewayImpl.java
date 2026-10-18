@@ -41,7 +41,8 @@ public class WorkOrderGatewayImpl implements WorkOrderGateway {
     public List<InvoicingWorkOrderRecord> findNotInvoicedByClientNif(String nif) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
         
-        try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TWORKORDERS_FINDNOTINVOICEDBYCLIENTNIF"))) {
+        try (PreparedStatement pst = c.prepareStatement(
+                Queries.getSQLSentence("TWORKORDERS_FINDNOTINVOICEDBYCLIENTNIF"))) {
             pst.setString(1, nif);
             
             try (ResultSet rs = pst.executeQuery()) {
