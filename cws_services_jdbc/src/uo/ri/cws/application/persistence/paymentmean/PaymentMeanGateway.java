@@ -16,5 +16,5 @@ public interface PaymentMeanGateway extends Gateway<PaymentMeanGateway.PaymentMe
         public BigDecimal accumulated;
         
     }
-
+    
 }

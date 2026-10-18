@@ -24,67 +24,65 @@ public class ServiceFactoryImpl implements ServiceFactory {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public ClientCrudService forClientCrudService() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public ClientHistoryService forClientHistoryService() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public WorkOrderCrudService forWorkOrderCrudService() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public CloseWorkOrderService forClosingWorkOrder() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	@Override
 	public ViewAssignedWorkOrdersService forViewAssignedWorkOrdersService() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	@Override
 	public MechanicCrudService forMechanicCrudService() {
 		return new MechanicCrudServiceImpl();
 	}
-
+	
 	@Override
 	public VehicleTypeCrudService forVehicleTypeCrudService() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public SparePartCrudService forSparePartCrudService() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public InvoicingService forCreateInvoiceService() {
 	    return new InvoicingServiceImpl();
 	}
-
+	
 	@Override
 	public VoucherGenerationService forVoucherService() {
 	    return new VoucherGenerationServiceImpl();
 	}
-
+	
 	@Override
 	public PaymentMeanCrudService forPaymentMeanCrudService() {
 	    return new PaymentMeanCrudServiceImpl();
 	}
-
+	
 }

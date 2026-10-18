@@ -14,11 +14,11 @@ import uo.ri.util.exception.NotYetImplementedException;
 import uo.ri.util.exception.PersistenceException;
 
 public class InterventionGatewayImpl implements InterventionGateway {
-
+    
     @Override
     public boolean hasInterventions(String mechanicId) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
-
+        
         try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TINTERVENTIONS_HASINTERVENTIONS"))) {
             pst.setString(1, mechanicId);
             
@@ -37,25 +37,25 @@ public class InterventionGatewayImpl implements InterventionGateway {
     public void add(InterventionRecord t) throws PersistenceException {
         throw new NotYetImplementedException();
     }
-
+    
     @Override
     public void remove(String id) throws PersistenceException {
         throw new NotYetImplementedException();
     }
-
+    
     @Override
     public void update(InterventionRecord t) throws PersistenceException {
         throw new NotYetImplementedException();
     }
-
+    
     @Override
     public Optional<InterventionRecord> findById(String id) throws PersistenceException {
         throw new NotYetImplementedException();
     }
-
+    
     @Override
     public List<InterventionRecord> findAll() throws PersistenceException {
         throw new NotYetImplementedException();
     }
-
+    
 }

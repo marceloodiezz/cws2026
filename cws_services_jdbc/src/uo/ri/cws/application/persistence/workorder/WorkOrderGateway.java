@@ -18,14 +18,14 @@ public interface WorkOrderGateway extends Gateway<WorkOrderGateway.WorkOrderReco
     
     List<InvoicingWorkOrderRecord> findNotInvoicedByClientNif(String nif) throws PersistenceException;
     
-
-    // Para GenerateVouchers --------------------------
-
-    boolean hasPaidWorkOrdersByClientId(String clientId) throws PersistenceException;
-
-
-    public class WorkOrderRecord extends Gateway.BaseRecord {
     
+    // Para GenerateVouchers --------------------------
+    
+    boolean hasPaidWorkOrdersByClientId(String clientId) throws PersistenceException;
+    
+    
+    public class WorkOrderRecord extends Gateway.BaseRecord {
+        
         public LocalDateTime date;
         public String description;
         public BigDecimal total_amount;
@@ -38,7 +38,7 @@ public interface WorkOrderGateway extends Gateway<WorkOrderGateway.WorkOrderReco
     }
     
     public class InvoicingWorkOrderRecord {
-
+        
         public String id;
         public String description;
         public LocalDateTime date;
@@ -46,5 +46,5 @@ public interface WorkOrderGateway extends Gateway<WorkOrderGateway.WorkOrderReco
         public BigDecimal amount;
         
     }
-
+    
 }

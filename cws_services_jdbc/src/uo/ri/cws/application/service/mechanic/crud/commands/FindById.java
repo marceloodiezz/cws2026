@@ -19,6 +19,7 @@ public class FindById implements Command<Optional<MechanicDto>> {
 	public FindById(String id) {
 		ArgumentChecks.isNotNull(id, "The id cannot be null");
 		ArgumentChecks.isNotBlank(id, "The id cannot be blank");
+		
 		this.id = id;
 	}
 	
@@ -26,13 +27,14 @@ public class FindById implements Command<Optional<MechanicDto>> {
     public Optional<MechanicDto> execute() {
 	    
 	    Optional<MechanicRecord> record = mg.findById(id);
-    
-        if (record.isEmpty())
+	    
+        if (record.isEmpty()) {
             return Optional.empty();
+        }
         
         MechanicDto dto = MechanicDtoAssembler.toDto(record.get());
-    
+        
         return Optional.of(dto);
 	}
-
+	
 }

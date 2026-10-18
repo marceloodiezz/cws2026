@@ -24,14 +24,14 @@ public class MechanicDtoAssembler {
     
     public static MechanicRecord toRecordForUpdate(MechanicDto dto) {
         MechanicRecord record = new MechanicRecord();
-    
+        
         record.id = dto.id;
         record.version = dto.version;
         record.nif = dto.nif;
         record.name = dto.name;
         record.surname = dto.surname;
         record.updatedAt = LocalDateTime.now();
-    
+        
         return record;
     }
     
@@ -49,11 +49,12 @@ public class MechanicDtoAssembler {
     
     public static List<MechanicDto> toDtoList(List<MechanicRecord> records) {
         List<MechanicDto> result = new ArrayList<>();
-    
-        for (MechanicRecord record : records)
+        
+        for (MechanicRecord record : records) {
             result.add(toDto(record));
-    
+        }
+        
         return result;
     }
-
+    
 }

@@ -20,77 +20,81 @@ import uo.ri.cws.application.persistence.workorder.WorkOrderGateway;
 import uo.ri.util.exception.BusinessException;
 
 public class GenerateVouchers implements Command<int[]> {
-
+    
     private static final int RECOMMENDATIONS_PER_VOUCHER = 3;
     private static final BigDecimal VOUCHER_AMOUNT = new BigDecimal("25.00");
     private static final String VOUCHER_DESCRIPTION = "Por recomendación";
-
+    
     private ClientGateway cg = Factories.persistence.forClient();
-
+    
     private RecommendationGateway rg = Factories.persistence.forRecommendation();
-
+    
     private WorkOrderGateway wg = Factories.persistence.forWorkOrder();
-
+    
     private PaymentMeanGateway pmg = Factories.persistence.forPaymentMean();
-
+    
     private VoucherGateway vg = Factories.persistence.forVoucher();
-
+    
     @Override
     public int[] execute() throws BusinessException {
         int[] counters = { 0, 0, 0 };
-
+        
         List<ClientRecord> clients = cg.findAll();
-
+        
         for (ClientRecord client : clients) {
-
-            if (!wg.hasPaidWorkOrdersByClientId(client.id))
+            
+            if (!wg.hasPaidWorkOrdersByClientId(client.id)) {
                 continue;
-
+            }
+            
             List<RecommendationRecord> recommendations = rg.findAvailableByRecommender(client.id);
             List<RecommendationRecord> validRecommendations = new ArrayList<>();
-
-            for (RecommendationRecord recommendation : recommendations)
-                if (wg.hasPaidWorkOrdersByClientId(recommendation.recommendedId))
+            
+            for (RecommendationRecord recommendation : recommendations) {
+                if (wg.hasPaidWorkOrdersByClientId(recommendation.recommendedId)) {
                     validRecommendations.add(recommendation);
-
+                }
+            }
+            
             int numberOfVouchers = validRecommendations.size() / RECOMMENDATIONS_PER_VOUCHER;
-
+            
             for (int i = 0; i < numberOfVouchers; i++) {
                 generateVoucher(client.id);
-
+                
                 int start = i * RECOMMENDATIONS_PER_VOUCHER;
-
+                
                 for (int j = start; j < start + RECOMMENDATIONS_PER_VOUCHER; j++) {
                     RecommendationRecord recommendation = validRecommendations.get(j);
-
+                    
                     recommendation.usedForVoucher = true;
                     recommendation.updatedAt = LocalDateTime.now();
-
+                    
                     rg.update(recommendation);
                 }
-
+                
                 counters[1]++;
             }
         }
-
+        
         return counters;
     }
-
+    
     private void generateVoucher(String clientId) {
         PaymentMeanRecord pm = new PaymentMeanRecord();
 
         pm.dtype = "Voucher";
         pm.clientId = clientId;
         pm.accumulated = BigDecimal.ZERO;
-
+        
         VoucherRecord voucher = new VoucherRecord();
-
+        
         voucher.id = pm.id;
         voucher.code = UUID.randomUUID().toString();
         voucher.description = VOUCHER_DESCRIPTION;
         voucher.available = VOUCHER_AMOUNT;
-
+        
         pmg.add(pm);
         vg.add(voucher);
     }
+    
 }

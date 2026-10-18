@@ -27,35 +27,26 @@ public class UpdateMechanic implements Command<Void> {
         
         this.dto = dto;
     }
-
+    
     @Override
     public Void execute() throws BusinessException {
         
         Optional<MechanicRecord> current = mg.findById(dto.id);
         
-        BusinessChecks.exists(
-        		current,
-        		"Mechanic does not exist"
-        );
+        BusinessChecks.exists(current, "Mechanic does not exist");
         
-        BusinessChecks.hasVersion(
-        		dto.version,
-        		current.get().version
-        );
+        BusinessChecks.hasVersion(dto.version, current.get().version);
         
         Optional<MechanicRecord> mechanicWithNif = mg.findByNif(dto.nif);
         
         if (mechanicWithNif.isPresent()) {
-        	BusinessChecks.isTrue(
-        			mechanicWithNif.get().id.equals(dto.id),
-        			"Another mechanic already has this NIF"
-        	);
+        	BusinessChecks.isTrue(mechanicWithNif.get().id.equals(dto.id), "Another mechanic already has this NIF");
         }
         
         MechanicRecord record = MechanicDtoAssembler.toRecordForUpdate(dto);
-    
+        
         mg.update(record);
-    
+        
         return null;
     }
     

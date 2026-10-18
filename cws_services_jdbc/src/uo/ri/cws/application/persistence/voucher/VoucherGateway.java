@@ -16,5 +16,5 @@ public interface VoucherGateway extends Gateway<VoucherGateway.VoucherRecord> {
         public BigDecimal available;
         
     }
-
+    
 }

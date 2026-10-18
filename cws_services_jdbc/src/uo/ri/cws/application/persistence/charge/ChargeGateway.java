@@ -15,5 +15,5 @@ public interface ChargeGateway extends Gateway<ChargeGateway.ChargeRecord> {
         public String paymentMeanId;
         
     }
-
+    
 }

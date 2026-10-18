@@ -19,15 +19,15 @@ public class FindNotInvoicedWorkOrdersByClient implements Command<List<Invoicing
     public FindNotInvoicedWorkOrdersByClient(String nif) {
         ArgumentChecks.isNotNull(nif);
         ArgumentChecks.isNotBlank(nif);
-
+        
         this.nif = nif;
     }
     
     @Override
     public List<InvoicingWorkOrderDto> execute() {
         List<InvoicingWorkOrderRecord> records = wg.findNotInvoicedByClientNif(nif);
-
+        
         return InvoicingWorkOrderDtoAssembler.toDtoList(records);
     }
-
+    
 }

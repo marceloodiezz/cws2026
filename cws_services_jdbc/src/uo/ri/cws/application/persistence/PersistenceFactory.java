@@ -24,7 +24,7 @@ public interface PersistenceFactory {
 		VoucherGateway forVoucher();
 		RecommendationGateway forRecommendation();
 		ChargeGateway forCharge();
-
+		
 //		SparePartGateway forSparePart();
 //		SubstitutionGateway forSubstitutionsGateway();
 //		VehicleGateway forVehicle();

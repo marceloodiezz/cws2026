@@ -14,11 +14,11 @@ import uo.ri.cws.application.persistence.util.jdbc.Queries;
 import uo.ri.util.exception.PersistenceException;
 
 public class PaymentMeanGatewayImpl implements PaymentMeanGateway {
-
+    
     @Override
     public void add(PaymentMeanRecord record) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
-
+        
         try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TPAYMENTMEANS_ADD"))) {
             pst.setString(1, record.id);
             pst.setString(2, record.dtype);
@@ -28,17 +28,17 @@ public class PaymentMeanGatewayImpl implements PaymentMeanGateway {
             pst.setTimestamp(6, Timestamp.valueOf(record.createdAt));
             pst.setTimestamp(7, Timestamp.valueOf(record.updatedAt));
             pst.setString(8, record.entityState);
-
+            
             pst.executeUpdate();
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
     }
-
+    
     @Override
     public void remove(String id) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
-
+        
         try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TPAYMENTMEANS_REMOVE"))) {
             pst.setString(1, id);
             pst.executeUpdate();
@@ -46,7 +46,7 @@ public class PaymentMeanGatewayImpl implements PaymentMeanGateway {
             throw new PersistenceException(e);
         }
     }
-
+    
     @Override
     public void update(PaymentMeanRecord record) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
@@ -58,20 +58,20 @@ public class PaymentMeanGatewayImpl implements PaymentMeanGateway {
             pst.setTimestamp(4, Timestamp.valueOf(record.updatedAt));
             pst.setString(5, record.entityState);
             pst.setString(6, record.id);
-
+            
             pst.executeUpdate();
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
     }
-
+    
     @Override
     public Optional<PaymentMeanRecord> findById(String id) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
-
+        
         try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TPAYMENTMEANS_FINDBYID"))) {
             pst.setString(1, id);
-
+            
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
                     PaymentMeanRecord record = new PaymentMeanRecordAssembler().toRecord(rs);
@@ -84,11 +84,11 @@ public class PaymentMeanGatewayImpl implements PaymentMeanGateway {
             throw new PersistenceException(e);
         }
     }
-
+    
     @Override
     public List<PaymentMeanRecord> findAll() throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
-
+        
         try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TPAYMENTMEANS_FINDALL"))) {
             try (ResultSet rs = pst.executeQuery()) {
                 return new PaymentMeanRecordAssembler().toRecordList(rs);
@@ -97,14 +97,14 @@ public class PaymentMeanGatewayImpl implements PaymentMeanGateway {
             throw new PersistenceException(e);
         }
     }
-
+    
     @Override
     public List<PaymentMeanRecord> findByClientId(String clientId) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
-
+        
         try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TPAYMENTMEANS_FINDBYCLIENTID"))) {
             pst.setString(1, clientId);
-
+            
             try (ResultSet rs = pst.executeQuery()) {
                 return new PaymentMeanRecordAssembler().toRecordList(rs);
             }
@@ -112,5 +112,5 @@ public class PaymentMeanGatewayImpl implements PaymentMeanGateway {
             throw new PersistenceException(e);
         }
     }
-
+    
 }

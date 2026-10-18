@@ -17,5 +17,5 @@ public interface InterventionGateway extends Gateway<InterventionGateway.Interve
         public String workOrder_id;
         
     }
-
+    
 }

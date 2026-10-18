@@ -16,5 +16,5 @@ public interface CreditCardGateway extends Gateway<CreditCardGateway.CreditCardR
         public LocalDate validThru;
         
     }
-
+    
 }

@@ -17,8 +17,8 @@ public class ListAllMechanics implements Command<List<MechanicDto>> {
     public List<MechanicDto> execute() {
         
         List<MechanicRecord> records = mg.findAll();
-    
+        
         return MechanicDtoAssembler.toDtoList(records);
     }
-
+    
 }

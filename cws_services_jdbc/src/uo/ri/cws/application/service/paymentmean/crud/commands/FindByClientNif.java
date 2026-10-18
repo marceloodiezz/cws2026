@@ -20,60 +20,62 @@ import uo.ri.util.assertion.ArgumentChecks;
 import uo.ri.util.exception.BusinessException;
 
 public class FindByClientNif implements Command<List<PaymentMeanDto>> {
-
+    
     private ClientGateway cg = Factories.persistence.forClient();
-
+    
     private PaymentMeanGateway pmg = Factories.persistence.forPaymentMean();
-
+    
     private CreditCardGateway ccg = Factories.persistence.forCreditCard();
-
+    
     private VoucherGateway vg = Factories.persistence.forVoucher();
-
+    
     private String nif;
-
+    
     public FindByClientNif(String nif) {
         ArgumentChecks.isNotNull(nif, "The nif cannot be null");
         ArgumentChecks.isNotBlank(nif, "The nif cannot be blank");
-
+        
         this.nif = nif;
     }
-
+    
     @Override
     public List<PaymentMeanDto> execute() throws BusinessException {
         List<PaymentMeanDto> result = new ArrayList<>();
-
+        
         Optional<ClientRecord> client = cg.findByNif(nif);
-
-        if (client.isEmpty())
+        
+        if (client.isEmpty()) {
             return result;
-
+        }
+        
         List<PaymentMeanRecord> paymentMeans = pmg.findByClientId(client.get().id);
-
+        
         for (PaymentMeanRecord pm : paymentMeans) {
             switch (pm.dtype) {
-
-                case "Cash":
-                    result.add(PaymentMeanDtoAssembler.toCashDto(pm));
-                    break;
-
-                case "CreditCard":
-                    CreditCardRecord card = ccg.findById(pm.id)
+            
+            case "Cash":
+                result.add(PaymentMeanDtoAssembler.toCashDto(pm));
+                break;
+                
+            case "CreditCard":
+                CreditCardRecord card = ccg.findById(pm.id)
                             .orElseThrow(() -> new IllegalStateException("Credit card not found: " + pm.id));
-                    result.add(PaymentMeanDtoAssembler.toCardDto(pm, card));
-                    break;
-
-                case "Voucher":
-                    VoucherRecord voucher = vg.findById(pm.id)
+                result.add(PaymentMeanDtoAssembler.toCardDto(pm, card));
+                break;
+                
+            case "Voucher":
+                VoucherRecord voucher = vg.findById(pm.id)
                             .orElseThrow(() -> new IllegalStateException("Voucher not found: " + pm.id));
-                    result.add(PaymentMeanDtoAssembler.toVoucherDto(pm, voucher));
-                    break;
-
-                default:
-                    throw new IllegalStateException("Unknown payment mean type: " + pm.dtype);
+                result.add(PaymentMeanDtoAssembler.toVoucherDto(pm, voucher));
+                break;
+                
+            default:
+                throw new IllegalStateException("Unknown payment mean type: " + pm.dtype);
+                
             }
         }
-
+        
         return result;
     }
-
+    
 }

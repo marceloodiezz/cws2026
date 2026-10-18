@@ -7,7 +7,7 @@ import uo.ri.cws.application.persistence.paymentmean.PaymentMeanGateway.PaymentM
 import uo.ri.cws.application.persistence.util.assembler.BaseRecordAssembler;
 
 public class PaymentMeanRecordAssembler extends BaseRecordAssembler<PaymentMeanRecord> {
-
+    
     public PaymentMeanRecordAssembler() {
         super(PaymentMeanRecord::new);
     }
@@ -15,12 +15,12 @@ public class PaymentMeanRecordAssembler extends BaseRecordAssembler<PaymentMeanR
     @Override
     public PaymentMeanRecord toRecord(ResultSet rs) throws SQLException {
         PaymentMeanRecord record = super.toRecord(rs);
-
+        
         record.dtype = rs.getString("dtype");
         record.clientId = rs.getString("client_id");
         record.accumulated = rs.getBigDecimal("accumulated");
-
+        
         return record;
     }
-
+    
 }

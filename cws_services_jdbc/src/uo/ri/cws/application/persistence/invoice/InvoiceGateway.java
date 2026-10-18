@@ -11,17 +11,17 @@ public interface InvoiceGateway extends Gateway<InvoiceGateway.InvoiceRecord> {
     long getNextInvoiceNumber() throws PersistenceException;
     
     public class InvoiceRecord extends Gateway.BaseRecord {
-
+        
         public long number;
         public LocalDate date;
         public String state;
-
+        
         public BigDecimal subtotal;
         public BigDecimal total;
-
+        
         public double vatRate;
         public BigDecimal vatAmount;
         
     }
-
+    
 }

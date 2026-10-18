@@ -7,7 +7,7 @@ import uo.ri.cws.application.persistence.mechanic.MechanicGateway.MechanicRecord
 import uo.ri.cws.application.persistence.util.assembler.BaseRecordAssembler;
 
 public class MechanicRecordAssembler extends BaseRecordAssembler<MechanicRecord> {
-
+    
     public MechanicRecordAssembler() {
         super(MechanicRecord::new);
     }
@@ -22,5 +22,5 @@ public class MechanicRecordAssembler extends BaseRecordAssembler<MechanicRecord>
         
         return record;
     }
-
+    
 }

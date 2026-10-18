@@ -16,20 +16,20 @@ import uo.ri.util.exception.NotYetImplementedException;
 import uo.ri.util.exception.PersistenceException;
 
 public class InvoiceGatewayImpl implements InvoiceGateway {
-
+    
     @Override
     public long getNextInvoiceNumber() throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
-
+        
         try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TINVOICES_GETNEXTINVOICENUMBER"))) {
-
             try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next())
+                if (rs.next()) {
                     return rs.getLong(1) + 1;
+                }
             }
-
+            
             return 1L;
-
+            
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
@@ -38,9 +38,9 @@ public class InvoiceGatewayImpl implements InvoiceGateway {
     @Override
     public void add(InvoiceRecord invoice) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
-
+        
         try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TINVOICES_ADD"))) {
-
+            
             pst.setString(1, invoice.id);
             pst.setLong(2, invoice.version);
             pst.setLong(3, invoice.number);
@@ -54,31 +54,31 @@ public class InvoiceGatewayImpl implements InvoiceGateway {
             pst.setTimestamp(11, Timestamp.valueOf(invoice.updatedAt));
             pst.setString(12, invoice.entityState);
             pst.setBoolean(13, false);
-
+            
             pst.executeUpdate();
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
     }
-
+    
     @Override
     public void remove(String id) throws PersistenceException {
         throw new NotYetImplementedException();
     }
-
+    
     @Override
     public void update(InvoiceRecord t) throws PersistenceException {
         throw new NotYetImplementedException();
     }
-
+    
     @Override
     public Optional<InvoiceRecord> findById(String id) throws PersistenceException {
         throw new NotYetImplementedException();
     }
-
+    
     @Override
     public List<InvoiceRecord> findAll() throws PersistenceException {
         throw new NotYetImplementedException();
     }
-
+    
 }

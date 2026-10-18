@@ -7,19 +7,20 @@ import uo.ri.cws.application.persistence.recommendation.RecommendationGateway.Re
 import uo.ri.cws.application.persistence.util.assembler.BaseRecordAssembler;
 
 public class RecommendationRecordAssembler extends BaseRecordAssembler<RecommendationRecord> {
-
+    
     public RecommendationRecordAssembler() {
         super(RecommendationRecord::new);
     }
-
+    
     @Override
     public RecommendationRecord toRecord(ResultSet rs) throws SQLException {
         RecommendationRecord record = super.toRecord(rs);
-
+        
         record.recommenderId = rs.getString("recommender_id");
         record.recommendedId = rs.getString("recommended_id");
         record.usedForVoucher = rs.getBoolean("usedForVoucher");
-
+        
         return record;
     }
+    
 }

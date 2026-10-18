@@ -14,33 +14,35 @@ import uo.ri.util.assertion.ArgumentChecks;
 import uo.ri.util.exception.BusinessException;
 
 public class FindCreditCardByNumber implements Command<Optional<CardDto>> {
-
+    
     private CreditCardGateway ccg = Factories.persistence.forCreditCard();
-
+    
     private PaymentMeanGateway pmg = Factories.persistence.forPaymentMean();
-
+    
     private String cardNumber;
-
+    
     public FindCreditCardByNumber(String cardNumber) {
         ArgumentChecks.isNotNull(cardNumber, "The card number cannot be null");
         ArgumentChecks.isNotBlank(cardNumber, "The card number cannot be blank");
-
+        
         this.cardNumber = cardNumber;
     }
-
+    
     @Override
     public Optional<CardDto> execute() throws BusinessException {
         Optional<CreditCardRecord> card = ccg.findByNumber(cardNumber);
-
-        if (card.isEmpty())
+        
+        if (card.isEmpty()) {
             return Optional.empty();
-
+        }
+        
         CreditCardRecord cr = card.get();
         PaymentMeanRecord pm = pmg.findById(cr.id)
                 .orElseThrow(() -> new IllegalStateException("Payment mean not found for card: " + cr.id));
-
+        
         CardDto dto = PaymentMeanDtoAssembler.toCardDto(pm, cr);
-
+        
         return Optional.of(dto);
     }
+    
 }

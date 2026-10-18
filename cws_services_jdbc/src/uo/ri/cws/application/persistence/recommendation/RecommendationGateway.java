@@ -15,5 +15,5 @@ public interface RecommendationGateway extends Gateway<RecommendationGateway.Rec
         public boolean usedForVoucher;
         
     }
-
+    
 }

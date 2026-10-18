@@ -15,10 +15,11 @@ public class ListMechanic implements Command<Optional<MechanicDto>> {
     private MechanicGateway mg = Factories.persistence.forMechanic();
     
     private String nif;
-
+    
     public ListMechanic(String nif) {
         ArgumentChecks.isNotNull(nif, "The nif cannot be null");
         ArgumentChecks.isNotBlank(nif, "The nif cannot or blank");
+        
         this.nif = nif;
     }
     
@@ -27,12 +28,13 @@ public class ListMechanic implements Command<Optional<MechanicDto>> {
         
         Optional<MechanicRecord> record = mg.findByNif(nif);
         
-        if (record.isEmpty())
+        if (record.isEmpty()) {
             return Optional.empty();
+        }
         
         MechanicDto dto = MechanicDtoAssembler.toDto(record.get());
         
         return Optional.of(dto);
     }
-
+    
 }

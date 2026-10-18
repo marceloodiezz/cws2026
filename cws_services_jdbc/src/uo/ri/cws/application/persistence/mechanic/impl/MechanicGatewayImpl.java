@@ -14,11 +14,11 @@ import uo.ri.cws.application.persistence.util.jdbc.Queries;
 import uo.ri.util.exception.PersistenceException;
 
 public class MechanicGatewayImpl implements MechanicGateway {
-
+    
     @Override
     public void add(MechanicRecord t) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
-
+        
         try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TMECHANICS_ADD"))) {
             pst.setString(1, t.id);
             pst.setString(2, t.nif);
@@ -34,20 +34,20 @@ public class MechanicGatewayImpl implements MechanicGateway {
             throw new PersistenceException(e);
         }
     }
-
+    
     @Override
     public void remove(String id) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
-
+        
         try (PreparedStatement pst = c.prepareStatement(Queries.getSQLSentence("TMECHANICS_REMOVE"))) {
             pst.setString(1, id);
             pst.executeUpdate();
-
+            
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
     }
-
+    
     @Override
     public void update(MechanicRecord t) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
@@ -64,7 +64,7 @@ public class MechanicGatewayImpl implements MechanicGateway {
             throw new PersistenceException(e);
         }
     }
-
+    
     @Override
     public Optional<MechanicRecord> findById(String id) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
@@ -75,17 +75,17 @@ public class MechanicGatewayImpl implements MechanicGateway {
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
                     MechanicRecord record = new MechanicRecordAssembler().toRecord(rs);
-
                     return Optional.of(record);
                 }
             }
-
+            
             return Optional.empty();
+            
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
     }
-
+    
     @Override
     public List<MechanicRecord> findAll() throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
@@ -98,7 +98,7 @@ public class MechanicGatewayImpl implements MechanicGateway {
             throw new PersistenceException(e);
         }
     }
-
+    
     @Override
     public Optional<MechanicRecord> findByNif(String nif) throws PersistenceException {
         Connection c = Jdbc.getCurrentConnection();
@@ -109,12 +109,12 @@ public class MechanicGatewayImpl implements MechanicGateway {
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
                     MechanicRecord record = new MechanicRecordAssembler().toRecord(rs);
-
                     return Optional.of(record);
                 }
             }
-
+            
             return Optional.empty();
+            
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }

@@ -28,25 +28,16 @@ public class DeleteMechanic implements Command<Void> {
     @Override
     public Void execute() throws BusinessException {
         
-        BusinessChecks.exists(
-            mg.findById(mechanicId),
-            "Mechanic does not exist"
-        );
+        BusinessChecks.exists(mg.findById(mechanicId), "Mechanic does not exist");
         
-        BusinessChecks.isFalse(
-            wg.hasWorkOrders(mechanicId),
-            "Mechanic has work orders"
-        );
-
-        BusinessChecks.isFalse(
-            ig.hasInterventions(mechanicId),
-            "Mechanic has interventions"
-        );
+        BusinessChecks.isFalse(wg.hasWorkOrders(mechanicId), "Mechanic has work orders");
+        
+        BusinessChecks.isFalse(ig.hasInterventions(mechanicId), "Mechanic has interventions");
         
         mg.remove(mechanicId);
-
+        
         return null;
         
     }
-
+    
 }

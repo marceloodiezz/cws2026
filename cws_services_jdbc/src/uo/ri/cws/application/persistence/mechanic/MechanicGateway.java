@@ -16,5 +16,5 @@ public interface MechanicGateway extends Gateway<MechanicGateway.MechanicRecord>
         public String surname;
         
     }
-
+    
 }

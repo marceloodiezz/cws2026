@@ -24,14 +24,11 @@ public class AddMechanic implements Command<MechanicDto> {
 	    
 		this.dto = dto;
 	}
-
+	
 	@Override
 	public MechanicDto execute() throws BusinessException {
 	    
-	    BusinessChecks.doesNotExist(
-	        mg.findByNif(dto.nif),
-	        "Mechanic already exists"
-        );
+	    BusinessChecks.doesNotExist(mg.findByNif(dto.nif), "Mechanic already exists");
 	    
 	    MechanicRecord record = MechanicDtoAssembler.toRecord(dto);
 	    
@@ -42,5 +39,5 @@ public class AddMechanic implements Command<MechanicDto> {
 	    
         return dto;
 	}
-
+	
 }

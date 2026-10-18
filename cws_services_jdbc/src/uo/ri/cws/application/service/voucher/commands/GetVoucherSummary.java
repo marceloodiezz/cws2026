@@ -19,58 +19,59 @@ import uo.ri.cws.application.service.paymentmean.VoucherGenerationService.Vouche
 import uo.ri.util.exception.BusinessException;
 
 public class GetVoucherSummary implements Command<List<VoucherSummaryDto>> {
-
+    
     private ClientGateway cg = Factories.persistence.forClient();
-
+    
     private PaymentMeanGateway pmg = Factories.persistence.forPaymentMean();
-
+    
     private VoucherGateway vg = Factories.persistence.forVoucher();
-
+    
     @Override
     public List<VoucherSummaryDto> execute() throws BusinessException {
         List<VoucherSummaryDto> result = new ArrayList<>();
-
+        
         List<PaymentMeanRecord> paymentMeans = pmg.findAll();
-
+        
         Map<String, List<PaymentMeanRecord>> vouchersByClient = new HashMap<>();
-
+        
         for (PaymentMeanRecord pm : paymentMeans) {
-            if (!"Voucher".equals(pm.dtype))
+            if (!"Voucher".equals(pm.dtype)) {
                 continue;
-
+            }
+            
             List<PaymentMeanRecord> clientVouchers = vouchersByClient.get(pm.clientId);
-
+            
             if (clientVouchers == null) {
                 clientVouchers = new ArrayList<>();
                 vouchersByClient.put(pm.clientId, clientVouchers);
             }
-
+            
             clientVouchers.add(pm);
         }
-
+        
         for (String clientId : vouchersByClient.keySet()) {
-
+            
             ClientRecord client = cg.findById(clientId)
                     .orElseThrow(() -> new IllegalStateException("Client not found: " + clientId));
-
+            
             List<PaymentMeanRecord> clientVouchers = vouchersByClient.get(clientId);
-
+            
             long issuedQty = clientVouchers.size();
-
+            
             BigDecimal availableAmount = BigDecimal.ZERO;
             BigDecimal consumedAmount = BigDecimal.ZERO;
-
+            
             for (PaymentMeanRecord pm : clientVouchers) {
-
+                
                 VoucherRecord voucher = vg.findById(pm.id)
                         .orElseThrow(() -> new IllegalStateException("Voucher not found: " + pm.id));
-
+                
                 availableAmount =availableAmount.add(voucher.available);
                 consumedAmount = consumedAmount.add(pm.accumulated);
             }
-
+            
             BigDecimal totalAmount = availableAmount.add(consumedAmount);
-
+            
             VoucherSummaryDto dto = new VoucherSummaryDto(
                     client.nif,
                     client.name,
@@ -80,13 +81,13 @@ public class GetVoucherSummary implements Command<List<VoucherSummaryDto>> {
                     availableAmount,
                     consumedAmount
             );
-
+            
             result.add(dto);
         }
-
+        
         result.sort(Comparator.comparing(VoucherSummaryDto::availableAmount).reversed());
-
+        
         return result;
     }
-
+    
 }

@@ -14,34 +14,35 @@ import uo.ri.util.assertion.ArgumentChecks;
 import uo.ri.util.exception.BusinessException;
 
 public class FindVoucherByCode implements Command<Optional<VoucherDto>> {
-
+    
     private VoucherGateway vg = Factories.persistence.forVoucher();
-
+    
     private PaymentMeanGateway pmg = Factories.persistence.forPaymentMean();
-
+    
     private String code;
-
+    
     public FindVoucherByCode(String code) {
         ArgumentChecks.isNotNull(code, "The code cannot be null");
         ArgumentChecks.isNotBlank(code, "The code cannot be blank");
-
+        
         this.code = code;
     }
-
+    
     @Override
     public Optional<VoucherDto> execute() throws BusinessException {
         Optional<VoucherRecord> voucher = vg.findByCode(code);
-
-        if (voucher.isEmpty())
+        
+        if (voucher.isEmpty()) {
             return Optional.empty();
-
+        }
+        
         VoucherRecord vr = voucher.get();
         PaymentMeanRecord pm = pmg.findById(vr.id)
                 .orElseThrow(() -> new IllegalStateException("Payment mean not found for voucher: " + vr.id));
-
+        
         VoucherDto dto = PaymentMeanDtoAssembler.toVoucherDto(pm, vr);
-
+        
         return Optional.of(dto);
     }
-
+    
 }

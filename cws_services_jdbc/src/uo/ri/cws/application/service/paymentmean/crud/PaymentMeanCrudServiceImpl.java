@@ -15,42 +15,42 @@ import uo.ri.cws.application.service.paymentmean.crud.commands.FindVoucherByCode
 import uo.ri.util.exception.BusinessException;
 
 public class PaymentMeanCrudServiceImpl implements PaymentMeanCrudService {
-
+    
     private CommandExecutor executor = new CommandExecutor();
-
+    
     @Override
     public CardDto addCard(CardDto card) throws BusinessException {
         return executor.execute(new AddCard(card));
     }
-
+    
     @Override
     public VoucherDto addVoucher(VoucherDto voucher) throws BusinessException {
         return executor.execute(new AddVoucher(voucher));
     }
-
+    
     @Override
     public void deletePaymentMean(String id) throws BusinessException {
         executor.execute(new DeletePaymentMean(id));
     }
-
+    
     @Override
     public Optional<PaymentMeanDto> findById(String id) throws BusinessException {
         return executor.execute(new FindById(id));
     }
-
+    
     @Override
     public List<PaymentMeanDto> findPaymentMeansByClientNif(String nif) throws BusinessException {
-        return executor.execute(new FindByClientNif(nif));
+        return executor.execute(new FindByClientNif(nif));    
     }
-
+    
     @Override
     public Optional<VoucherDto> findVoucherByCode(String code) throws BusinessException {
         return executor.execute(new FindVoucherByCode(code));
     }
-
+    
     @Override
     public Optional<CardDto> findCreditCardByNumber(String cardNumber) throws BusinessException {
         return executor.execute(new FindCreditCardByNumber(cardNumber));
     }
-
+    
 }
