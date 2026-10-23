@@ -3,6 +3,7 @@ package uo.ri.cws.application.ui.cashier;
 import uo.ri.cws.application.ui.cashier.action.FindNotInvoicedWorkOrdersByClientAction;
 import uo.ri.cws.application.ui.cashier.action.InvoiceWorkorderAction;
 import uo.ri.cws.application.ui.cashier.action.SettleInvoiceAction;
+import uo.ri.cws.application.ui.cashier.paymentmean.PaymentMeanMenu;
 import uo.ri.util.menu.BaseMenu;
 
 public class MainMenu extends BaseMenu {
@@ -14,7 +15,9 @@ public class MainMenu extends BaseMenu {
                         FindNotInvoicedWorkOrdersByClientAction.class },
                 { "Find work orders by plate", UnsupportedOperationException.class },
                 { "Invoice work orders", InvoiceWorkorderAction.class },
-                { "Settle invoice", SettleInvoiceAction.class }, };
+                { "Settle invoice", SettleInvoiceAction.class },
+                { "Payment mean management", PaymentMeanMenu.class }
+        };
 
     }
 
