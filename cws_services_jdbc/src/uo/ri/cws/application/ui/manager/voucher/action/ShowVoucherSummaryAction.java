@@ -5,6 +5,7 @@ import java.util.List;
 import uo.ri.conf.Factories;
 import uo.ri.cws.application.service.paymentmean.VoucherGenerationService;
 import uo.ri.cws.application.service.paymentmean.VoucherGenerationService.VoucherSummaryDto;
+import uo.ri.cws.application.ui.util.Printer;
 import uo.ri.util.console.Console;
 import uo.ri.util.exception.BusinessException;
 import uo.ri.util.menu.Action;
@@ -25,13 +26,7 @@ public class ShowVoucherSummaryAction implements Action {
         Console.printf("Clients with vouchers: %d%n", summaries.size());
         
         for (VoucherSummaryDto summary : summaries) {
-            Console.println();
-            Console.printf("Client: %s %s%n", summary.name(), summary.surname());
-            Console.printf("NIF: %s%n", summary.nif());
-            Console.printf("Issued vouchers: %d%n", summary.issuedQty());
-            Console.printf("Total amount: %.2f EUR%n", summary.totalAmount());
-            Console.printf("Available amount: %.2f EUR%n", summary.availableAmount());
-            Console.printf("Consumed amount: %.2f EUR%n", summary.consumedAmount());
+            Printer.printVoucherSummary(summary);
         }
     }
     

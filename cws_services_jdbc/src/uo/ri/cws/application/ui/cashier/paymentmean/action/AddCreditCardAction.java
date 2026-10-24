@@ -7,6 +7,7 @@ import java.time.format.DateTimeParseException;
 import uo.ri.conf.Factories;
 import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService;
 import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService.CardDto;
+import uo.ri.cws.application.ui.util.Printer;
 import uo.ri.util.console.Console;
 import uo.ri.util.exception.BusinessException;
 import uo.ri.util.exception.UserInteractionException;
@@ -28,11 +29,9 @@ public class AddCreditCardAction implements Action {
         card.cardExpiration = readExpiration();
         
         CardDto created = service.addCard(card);
+        
         Console.println("Credit card added");
-        Console.printf("Id: %s%n", created.id);
-        Console.printf("Number: %s%n", created.cardNumber);
-        Console.printf("Type: %s%n", created.cardType);
-        Console.printf("Expiration: %s%n", created.cardExpiration);
+        Printer.printPaymentMean(created);
     }
     
     private YearMonth readExpiration() throws UserInteractionException {

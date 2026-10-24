@@ -5,6 +5,7 @@ import java.util.Optional;
 import uo.ri.conf.Factories;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService.MechanicDto;
+import uo.ri.cws.application.ui.util.Printer;
 import uo.ri.util.console.Console;
 import uo.ri.util.exception.BusinessException;
 import uo.ri.util.menu.Action;
@@ -25,14 +26,7 @@ public class ListMechanicAction implements Action {
         Optional<MechanicDto> mechanic = service.findByNif(nif);
         
         if (mechanic.isPresent()) {
-            MechanicDto dto = mechanic.get();
-
-            Console.printf("\t%s %s %s %s %d\n",
-                    dto.id,
-                    dto.name,
-                    dto.surname,
-                    dto.nif,
-                    dto.version);
+            Printer.printMechanic(mechanic.get());
         }
 
         

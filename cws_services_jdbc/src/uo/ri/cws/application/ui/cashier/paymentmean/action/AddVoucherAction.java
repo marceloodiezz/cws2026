@@ -3,6 +3,7 @@ package uo.ri.cws.application.ui.cashier.paymentmean.action;
 import uo.ri.conf.Factories;
 import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService;
 import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService.VoucherDto;
+import uo.ri.cws.application.ui.util.Printer;
 import uo.ri.util.console.Console;
 import uo.ri.util.exception.BusinessException;
 import uo.ri.util.menu.Action;
@@ -23,10 +24,7 @@ public class AddVoucherAction implements Action {
         VoucherDto created = service.addVoucher(voucher);
         
         Console.println("Voucher added");
-        Console.printf("Id: %s%n", created.id);
-        Console.printf("Code: %s%n", created.code);
-        Console.printf("Description: %s%n", created.description);
-        Console.printf("Available amount: %.2f EUR%n", created.availableAmount);
+        Printer.printPaymentMean(created);
     }
 
 }
