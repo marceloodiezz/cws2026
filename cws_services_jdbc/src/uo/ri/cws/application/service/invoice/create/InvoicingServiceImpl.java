@@ -10,6 +10,7 @@ import uo.ri.cws.application.service.invoice.InvoicingService;
 import uo.ri.cws.application.service.invoice.create.commands.FindNotInvoicedWorkOrdersByClient;
 import uo.ri.cws.application.service.invoice.create.commands.InvoiceWorkorder;
 import uo.ri.util.exception.BusinessException;
+import uo.ri.util.exception.NotYetImplementedException;
 
 public class InvoicingServiceImpl implements InvoicingService {
     
@@ -22,8 +23,7 @@ public class InvoicingServiceImpl implements InvoicingService {
     
     @Override
     public List<InvoicingWorkOrderDto> findWorkOrdersByClientNif(String nif) throws BusinessException {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
     }
     
     @Override
@@ -33,26 +33,22 @@ public class InvoicingServiceImpl implements InvoicingService {
     
     @Override
     public List<InvoicingWorkOrderDto> findWorkOrdersByPlateNumber(String plate) throws BusinessException {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
     }
     
     @Override
     public Optional<InvoiceDto> findInvoiceByNumber(Long number) throws BusinessException {
-        // TODO Auto-generated method stub
-        return Optional.empty();
+        throw new NotYetImplementedException();
     }
     
     @Override
     public List<PaymentMeanDto> findPayMeansByClientNif(String nif) throws BusinessException {
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
     }
     
     @Override
     public void settleInvoice(String invoiceId, Map<String, BigDecimal> charges) throws BusinessException {
-        // TODO Auto-generated method stub
-        
+        throw new NotYetImplementedException();
     }
     
 }
