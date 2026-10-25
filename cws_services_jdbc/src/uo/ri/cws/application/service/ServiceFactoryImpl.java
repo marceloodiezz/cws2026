@@ -2,6 +2,7 @@ package uo.ri.cws.application.service;
 
 import uo.ri.cws.application.service.client.ClientCrudService;
 import uo.ri.cws.application.service.client.ClientHistoryService;
+import uo.ri.cws.application.service.client.crud.ClientCrudServiceImpl;
 import uo.ri.cws.application.service.invoice.InvoicingService;
 import uo.ri.cws.application.service.invoice.create.InvoicingServiceImpl;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService;
@@ -27,8 +28,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
 	
 	@Override
 	public ClientCrudService forClientCrudService() {
-		// TODO Auto-generated method stub
-		return null;
+	    return new ClientCrudServiceImpl();
 	}
 	
 	@Override
