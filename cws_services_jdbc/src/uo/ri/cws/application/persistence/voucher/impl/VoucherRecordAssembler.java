@@ -13,6 +13,15 @@ public class VoucherRecordAssembler {
         VoucherRecord record = new VoucherRecord();
         
         record.id = rs.getString("id");
+        record.version = rs.getLong("version");
+        record.createdAt = rs.getTimestamp("createdAt").toLocalDateTime();
+        record.updatedAt = rs.getTimestamp("updatedAt").toLocalDateTime();
+        record.entityState = rs.getString("entityState");
+        
+        record.dtype = rs.getString("dtype");
+        record.clientId = rs.getString("client_id");
+        record.accumulated = rs.getBigDecimal("accumulated");
+        
         record.code = rs.getString("code");
         record.description = rs.getString("description");
         record.available = rs.getBigDecimal("available");
