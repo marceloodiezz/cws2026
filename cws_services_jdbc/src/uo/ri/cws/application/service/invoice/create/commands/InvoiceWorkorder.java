@@ -5,8 +5,10 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import uo.ri.conf.Factories;
 import uo.ri.cws.application.persistence.invoice.InvoiceGateway;
@@ -95,8 +97,11 @@ public class InvoiceWorkorder implements Command<InvoiceDto> {
     
     private List<WorkOrderRecord> findWorkOrders(List<String> ids) throws BusinessException {
         List<WorkOrderRecord> result = new ArrayList<>();
+        Set<String> processedIds = new HashSet<>();
         
         for (String id : ids) {
+            BusinessChecks.isTrue(processedIds.add(id), "Duplicated work order id: " + id);
+            
             Optional<WorkOrderRecord> workOrder = wg.findById(id);
             
             BusinessChecks.exists(workOrder, "some workorder does not exist");
