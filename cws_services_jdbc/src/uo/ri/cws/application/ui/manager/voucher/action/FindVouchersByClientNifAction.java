@@ -6,6 +6,7 @@ import uo.ri.conf.Factories;
 import uo.ri.cws.application.service.paymentmean.VoucherGenerationService;
 import uo.ri.cws.application.service.paymentmean.VoucherGenerationService.VoucherDto;
 import uo.ri.cws.application.service.paymentmean.VoucherGenerationService.VoucherSummaryDto;
+import uo.ri.cws.application.ui.util.InputReader;
 import uo.ri.cws.application.ui.util.Printer;
 import uo.ri.util.console.Console;
 import uo.ri.util.exception.BusinessException;
@@ -17,7 +18,7 @@ public class FindVouchersByClientNifAction implements Action {
     
     @Override
     public void execute() throws BusinessException {
-        String nif = Console.readString("Client nif");
+        String nif = InputReader.readRequiredString("Client nif");
         
         List<VoucherDto> vouchers = service.findVouchersByClientNif(nif);
         

@@ -5,6 +5,7 @@ import java.util.Optional;
 import uo.ri.conf.Factories;
 import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService;
 import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService.PaymentMeanDto;
+import uo.ri.cws.application.ui.util.InputReader;
 import uo.ri.cws.application.ui.util.Printer;
 import uo.ri.util.console.Console;
 import uo.ri.util.exception.BusinessException;
@@ -16,7 +17,7 @@ public class FindPaymentMeanByIdAction implements Action {
     
     @Override
     public void execute() throws BusinessException {
-        String id = Console.readString("Payment mean id");
+        String id = InputReader.readRequiredString("Payment mean id");
         
         Optional<PaymentMeanDto> result = service.findById(id);
         

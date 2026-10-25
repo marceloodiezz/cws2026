@@ -5,6 +5,7 @@ import java.util.Optional;
 import uo.ri.conf.Factories;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService;
 import uo.ri.cws.application.service.mechanic.MechanicCrudService.MechanicDto;
+import uo.ri.cws.application.ui.util.InputReader;
 import uo.ri.cws.application.ui.util.Printer;
 import uo.ri.util.console.Console;
 import uo.ri.util.exception.BusinessException;
@@ -19,7 +20,7 @@ public class ListMechanicAction implements Action {
     public void execute() throws BusinessException {
 
         // Get info
-        String nif = Console.readString("nif");
+        String nif = InputReader.readRequiredString("NIF");
 
         Console.println("\nMechanic information \n");
         

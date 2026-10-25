@@ -5,6 +5,7 @@ import java.util.List;
 import uo.ri.conf.Factories;
 import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService;
 import uo.ri.cws.application.service.paymentmean.PaymentMeanCrudService.PaymentMeanDto;
+import uo.ri.cws.application.ui.util.InputReader;
 import uo.ri.cws.application.ui.util.Printer;
 import uo.ri.util.console.Console;
 import uo.ri.util.exception.BusinessException;
@@ -16,7 +17,7 @@ public class FindPaymentMeansByClientNifAction implements Action {
     
     @Override
     public void execute() throws BusinessException {
-        String nif = Console.readString("Client nif");
+        String nif = InputReader.readRequiredString("Client nif");
         
         List<PaymentMeanDto> paymentMeans = service.findPaymentMeansByClientNif(nif);
         
